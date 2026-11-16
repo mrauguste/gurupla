@@ -15,7 +15,6 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 <style>
 :root{
   --paper:#F5EBD6;--paper-light:#FFF9EC;--ink:#25212B;--purple:#5C32B5;--coral:#FF6257;--yellow:#FFD54A;
@@ -1562,23 +1561,79 @@ function screenConfirm(m,ps,me){
   S.justChose=false;
   $app.innerHTML=meetingShell(m,'confirm',inner,me,ps);
 }
-/* vize görseli: ekrandaki kartın birebir kopyası (gölgesiyle), PNG */
-async function vizeBlob(el){
-  if(typeof html2canvas!=='function')throw new Error('görsel kütüphanesi yüklenemedi');
-  const cap=el.closest('.vize-cap')||el;
-  const cv=await html2canvas(cap,{scale:2,backgroundColor:'#F5EBD6',useCORS:true,logging:false,onclone:doc=>{const c=doc.querySelector('.vize-cap');if(c){c.style.paddingTop='28px';c.style.marginTop='0';}const b=doc.querySelector('.vize-link');if(b)b.style.display='none';}});
+/* vize görseli: kütüphane kullanmadan, doğrudan canvas'a çizilir (PNG) */
+function vizeBlob(m,c,ps,need){
+  const W=900,H=500,k=2,cv=document.createElement('canvas');
+  cv.width=W*k;cv.height=H*k;const g=cv.getContext('2d');g.scale(k,k);
+  const INK='#25212B',PURPLE='#5C32B5',PAPER='#FFF9EC',BG='#F5EBD6',GREEN='#65D6A0',CORAL='#FF6257',GREY='#8a8189',OK='#2E8B5F';
+  const F='Arial, Helvetica, sans-serif';
+  const rr=(x,y,w,h,r)=>{g.beginPath();g.moveTo(x+r,y);g.arcTo(x+w,y,x+w,y+h,r);g.arcTo(x+w,y+h,x,y+h,r);g.arcTo(x,y+h,x,y,r);g.arcTo(x,y,x+w,y,r);g.closePath();};
+  const yes=ps.filter(p=>need.has(p.id)&&p.finalConfirmation==='yes').length;
+  const confirmed=m.status==='confirmed';
+  const L=(t,x,y,sz,col,w)=>{g.fillStyle=col;g.font=(w||'700')+' '+sz+'px '+F;g.fillText(t,x,y);};
+  // arka plan + gölge
+  g.fillStyle=BG;g.fillRect(0,0,W,H);
+  rr(34,34,W-56,H-56,28);g.fillStyle=INK;g.fill();
+  rr(20,20,W-56,H-56,28);g.fillStyle=PAPER;g.fill();
+  // mor üst bant
+  g.save();rr(20,20,W-56,128,28);g.clip();g.fillStyle=PURPLE;g.fillRect(0,0,W,148);g.restore();
+  g.fillStyle=INK;g.fillRect(20,146,W-56,4);
+  // kart kenarı
+  rr(20,20,W-56,H-56,28);g.lineWidth=6;g.strokeStyle=INK;g.stroke();
+  // desen
+  g.save();rr(20,150,W-56,H-226,0);g.clip();g.strokeStyle='rgba(92,50,181,0.07)';g.lineWidth=2;
+  for(let x=-H;x<W;x+=22){g.beginPath();g.moveTo(x,150);g.lineTo(x+H,150+H);g.stroke();}
+  g.restore();
+  // üst bant yazıları
+  g.fillStyle='#fff';g.font='700 20px '+F;try{g.letterSpacing='4px';}catch(e){}
+  g.textAlign='left';g.fillText('buluşma vizesi',60,88);try{g.letterSpacing='0px';}catch(e){}
+  g.font='800 40px '+F;g.textAlign='right';g.fillText('gurupla',W-60,96);g.textAlign='left';
+  // sol: damga kutusu (pasaport kutusu)
+  rr(60,190,160,160,22);g.fillStyle='#F2E7CF';g.fill();g.lineWidth=5;g.strokeStyle=INK;g.stroke();
+  g.save();rr(60,190,160,160,22);g.clip();g.strokeStyle='rgba(120,90,40,0.18)';g.lineWidth=10;
+  for(let x=-200;x<260;x+=28){g.beginPath();g.moveTo(x,190);g.lineTo(x+160,350);g.stroke();}g.restore();
+  g.beginPath();g.moveTo(140,235);g.lineTo(185,280);g.lineTo(140,325);g.lineTo(95,280);g.closePath();g.fillStyle=PURPLE;g.fill();g.lineWidth=5;g.strokeStyle=INK;g.stroke();
+  // sağ: alanlar
+  const X=262;
+  L('buluşma',X,214,18,GREY);L(m.title.slice(0,26),X,248,32,INK,'800');
+  L('tarih',X,290,18,GREY);L(D.day(c.date)+' '+D.month(c.date),X,326,30,INK,'800');
+  L('saat',X+230,290,18,GREY);L(c.start+'–'+c.end,X+230,326,30,INK,'800');
+  L('gün',X,364,18,GREY);L(DAY_NAMES[D.dow(c.date)],X,392,22,INK,'700');
+  L('süre',X+230,364,18,GREY);L(dur(c.durationMinutes),X+230,392,22,INK,'700');
+  L('yer',X,428,18,GREY);L(m.location||'henüz belirlenmedi',X,454,22,INK,'700');
+  // yolcular
+  L('yolcular · '+yes+'/'+need.size+' onay',560,214,18,GREY);
+  ps.filter(p=>need.has(p.id)).slice(0,5).forEach((p,i)=>{
+    const y=248+i*34,f=p.finalConfirmation;
+    g.beginPath();g.arc(572,y-8,8,0,Math.PI*2);g.fillStyle=f==='yes'?GREEN:f==='no'?CORAL:'#E9E1D0';g.fill();g.lineWidth=2.5;g.strokeStyle=INK;g.stroke();
+    L(p.displayName.slice(0,20),592,y,22,INK,'700');
+  });
+  // damga
+  const sx=760,sy=330;
+  [88,80].forEach(r=>{g.beginPath();g.arc(sx,sy,r,0,Math.PI*2);g.lineWidth=r===88?4:2.5;g.strokeStyle=OK;g.stroke();});
+  g.save();g.translate(sx,sy);g.rotate(-0.2);g.fillStyle=OK;g.textAlign='center';
+  g.font='800 24px '+F;g.fillText(confirmed?'onaylandı':'onay bekliyor',0,-4);
+  g.font='700 18px '+F;g.fillText(D.day(c.date)+' '+D.month(c.date),0,26);g.restore();g.textAlign='left';
+  // alt şerit: kod
+  g.fillStyle='rgba(255,255,255,.75)';g.fillRect(20,H-110,W-56,62);
+  g.fillStyle=INK;g.fillRect(20,H-110,W-56,3);
+  g.fillStyle=INK;g.font='700 22px monospace';g.fillText('kod '+m.code,60,H-72);
+  g.fillStyle=confirmed?GREEN:'#FFD54A';rr(W-300,H-100,220,44,22);g.fill();g.lineWidth=3;g.strokeStyle=INK;g.stroke();
+  g.fillStyle=INK;g.font='800 20px '+F;g.textAlign='center';g.fillText(confirmed?'onaylandı':'onay bekliyor',W-190,H-71);g.textAlign='left';
   return new Promise((res,rej)=>cv.toBlob(b=>b?res(b):rej(new Error('png üretilemedi')),'image/png'));
 }
 ACTIONS.copyVize=async()=>{
-  const el=$('.visa');if(!el){toast('Önce bir tarih onaylanmalı');return;}
+  const m=curMeeting(),c=m.selectedCandidate;
+  if(!c){toast('Henüz bir tarih seçilmedi');return;}
   try{
-    const b=await vizeBlob(el);
+    const ps=DB.getParticipants(m.id),need=new Set(c.availableIds.concat(m.requiredParticipantIds));
+    const b=await vizeBlob(m,c,ps,need);
     try{
       if(!navigator.clipboard||!window.ClipboardItem)throw new Error('pano yok');
       await navigator.clipboard.write([new ClipboardItem({'image/png':b})]);
       toast('Vize kopyalandı, istediğin yere yapıştır');
     }catch(e){
-      const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='gurupla-vize-'+curMeeting().code+'.png';a.click();
+      const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='gurupla-vize-'+m.code+'.png';a.click();
       toast('Pano desteklenmedi, vize png olarak indirildi');
     }
   }catch(e){console.error(e);toast('Vize görseli oluşturulamadı: '+e.message,3500);}
