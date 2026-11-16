@@ -15,6 +15,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 <style>
 :root{
   --paper:#F5EBD6;--paper-light:#FFF9EC;--ink:#25212B;--purple:#5C32B5;--coral:#FF6257;--yellow:#FFD54A;
@@ -102,6 +103,10 @@ a{color:var(--purple)}
 .rbar .rfill{position:absolute;left:0;top:0;bottom:0;background:var(--purple);border-radius:99px;opacity:.35}
 .rbar .rd{position:absolute;top:50%;width:24px;height:24px;margin:-12px 0 0 -12px;border-radius:50%;background:var(--purple);border:3px solid var(--ink)}
 .drow{display:flex;flex-wrap:wrap;gap:12px}
+.tkw{position:relative}
+.vize-cap{position:relative;display:block;width:fit-content;max-width:calc(100% + 56px);padding:76px 28px 28px;margin:-76px 0 -28px -28px}
+.vize-link{position:absolute;top:12px;right:28px;z-index:3}
+.stamp-ok{position:absolute;right:16px;top:58px;z-index:5;transform:rotate(-12deg);border:3px double var(--green);color:var(--green);font:800 15px var(--f-display);padding:6px 12px;border-radius:10px;background:rgba(255,249,236,.85);pointer-events:none;text-transform:lowercase}
 .hbar .rfill{background:var(--cyan);opacity:1}
 .hbar .rd{background:var(--cyan)}
 .drow .field{min-width:0;flex:0 1 auto}
@@ -1027,7 +1032,7 @@ const dur=min=>min===1440?'tüm gün':min%60===0?(min/60)+' saat':(min<60?min+' 
 const rangeLabel=m=>D.mid(m.startDate)+' – '+D.mid(m.endDate);
 const inviteLink=m=>location.href.split('#')[0]+'#/m/'+m.code+'/join';
 
-const STAGES=[['invite','Davet'],['avail','Müsaitlik'],['group','Grup'],['results','Öneriler'],['confirm','Onay']];
+const STAGES=[['invite','Davet'],['avail','Müsaitlik'],['results','Öneriler'],['confirm','Onay']];
 function meetingShell(m,stage,inner,me,ps){
   const nav='<nav class="stages" aria-label="Aşamalar">'+STAGES.map((s,i)=>'<a class="stage'+(s[0]===stage?' cur':'')+'" href="#/m/'+m.code+'/'+s[0]+'"'+(s[0]===stage?' aria-current="page"':'')+'><i>'+(i+1)+'</i>'+s[1]+'</a>').join('')+'</nav>';
   const chipCls={confirmed:'g',cancelled:'c',pending_confirmation:'y',results_ready:'b'}[m.status]||'';
@@ -1284,7 +1289,7 @@ function screenInvite(m,ps,me){
     +'<section class="panel rivets"><h2>Katılımcılar <span class="muted" style="font-size:18px">('+ps.length+')</span></h2><div class="plist mt">'+rows+'</div>'
     +'<div class="row mt"><input id="newName" class="inp" style="flex:1;min-width:150px" maxlength="40" placeholder="Davetli adı" data-enter="addPart" aria-label="Davetli adı"><button class="btn sm" data-act="addPart">Ekle</button></div><div id="addErr" class="err" role="alert"></div>'
     +(admin&&ps.some(p=>p.submissionStatus!=='submitted')?'':'')
-    +'</section></div><div class="row between mt2 sticky"><a class="btn sm ghost" href="#/m/'+m.code+'/group">Grup görünümü</a><a class="btn sm" href="#/m/'+m.code+'/avail">Müsaitliğimi gir</a></div>';
+    +'</section></div><div class="row between mt2 sticky"><a class="btn sm" href="#/m/'+m.code+'/avail">Müsaitliğimi gir</a></div>';
   $app.innerHTML=meetingShell(m,'invite',inner,me,ps);
 }
 const curMeeting=()=>DB.getMeeting(seg()[1]);
@@ -1313,11 +1318,11 @@ function screenAvail(m,ps,me){
   const per=PERIODS.filter(p=>Math.max(p.s,e)<Math.min(p.e,l));
   const pick=per.find(p=>p.s<=1140&&p.e>1140)||per[0];if(pick)AV.open[pick.k]=true;
   $app.innerHTML=meetingShell(m,'avail','<div style="max-width:720px;margin:0 auto" class="stack">'
-    +'<p class="intro-note" style="font-size:16px;margin:0">gün seç, müsait olduğun saatlere dokun. dokunduğun yeşil olur, boş kalanlar müsait değil demek. istediğin kadar değiştirebilirsin.</p>'
+    +'<p class="intro-note" style="font-size:16px;margin:0">'+(allDayM(m)?'gün seç, müsait olduğun günlere dokun. dokunduğun yeşil olur, boş kalanlar müsait değil demek.':'gün seç, müsait olduğun saatlere dokun. dokunduğun yeşil olur, boş kalanlar müsait değil demek. istediğin kadar değiştirebilirsin.')+'</p>'
     +'<div class="guide" aria-label="Nasıl işaretlenir"><div class="gd g1">'+shape('preferred',22)+'<span>Tek tık<small>müsaitim</small></span></div></div>'
     +'<section class="panel"><div id="avCal"></div></section><section class="panel" id="avPanel"></section>'
     +'<div class="row between sticky"><span class="small muted">müsait saatlerini girdiysen tamamlamak için buna bas.</span><button class="btn" data-act="avDone">Yanıtımı tamamla</button></div></div>',me,ps);
-  const cal=lineCalendar({dates,selected:AV.idx,onSelect:i=>avGo(i),arrows:false});
+  const cal=lineCalendar({dates,selected:AV.idx,onSelect:i=>avGo(i)});
   AV.cal=cal;$('#avCal').appendChild(cal.el);
   const panel=$('#avPanel');
   panel.addEventListener('pointerdown',avDown);
@@ -1337,7 +1342,7 @@ function avRefresh(){
   let body='';
   if(past)body='<p class="muted">Bu gün geçmişte kaldı.</p>';
   else if(allDayM(m)){
-    body='<div class="row" style="gap:10px;flex-wrap:wrap">'+[['preferred','müsaitim'],['possible','olabilir'],['unavailable','müsait değilim']].map(([k,l])=>'<button class="btn'+(e.dayPreference===k?' dark':' ghost')+'" data-act="setDay" data-v="'+k+'">'+shape(k,16)+' '+l+'</button>').join('')+'</div><p class="intro-note" style="font-size:15px;margin-top:14px">saat derdi yok, sadece hangi günlerin uygun olduğunu işaretle. detayı sonra birlikte konuşursunuz.</p>';
+    body='<div class="row" style="gap:10px;flex-wrap:wrap"><button class="btn'+(e.dayPreference==='preferred'?' dark':' ghost')+'" data-act="setDay" data-v="preferred">'+shape('preferred',16)+' müsaitim</button></div><p class="intro-note" style="font-size:15px;margin-top:14px">saat derdi yok, sadece hangi günlerin uygun olduğunu işaretle. detayı sonra birlikte konuşursunuz.</p>';
   }
   else{
     const a=T.toMin(m.earliestTime),l=T.toMin(m.latestTime);
@@ -1400,7 +1405,7 @@ function avDown(ev){
 }
 function avSave(d){try{DB.saveAvailability(AV.pid,d,AV.cur.availability[d]);DB.refreshStatus(AV.mid);}catch(err){console.error(err);toast('Kaydedilemedi: '+err.message,3500);}}
 ACTIONS.togPeriod=el=>{AV.open[el.dataset.k]=!AV.open[el.dataset.k];avRefresh();};
-ACTIONS.setDay=el=>{const e=avEntry();e.dayPreference=el.dataset.v;e.slots={};avSave(AV.dates[AV.idx]);avRefresh();};
+ACTIONS.setDay=el=>{const e=avEntry(),v=el.dataset.v;e.dayPreference=e.dayPreference===v?'unavailable':v;e.slots={};avSave(AV.dates[AV.idx]);avRefresh();};
 ACTIONS.clearDay=()=>{const d=AV.dates[AV.idx];delete AV.cur.availability[d];try{DB.saveAvailability(AV.pid,d,null);DB.refreshStatus(AV.mid);}catch(e){}avRefresh();toast('Gün temizlendi');};
 ACTIONS.avDone=()=>{
   avLeave();
@@ -1477,7 +1482,8 @@ function resTicket(c,i,m,admin){
   const det=open?'<div class="detail"><ul class="lines" style="margin-bottom:12px">'+explainCandidate(c).map(x=>'<li>'+shape(x.type==='unavailable'?'unavailable':x.type==='pending'||x.type==='requiredPending'?'pending':x.type==='possible'?'possible':'preferred',14)+'<span>'+esc(explainText(x))+'</span></li>').join('')+'</ul>'
     +'<div class="lbl" style="margin-bottom:6px">Kişi kişi</div><div class="plist">'+c.details.map(d=>'<div class="row" style="gap:8px">'+shape(d.status==='available'?(d.fullyPreferred?'preferred':'possible'):d.status==='unavailable'?'unavailable':'pending',16)+'<b>'+esc(d.name)+'</b>'+(d.isRequired?'<span class="chip c">Zorunlu</span>':'')
     +'<span class="small muted">'+(d.status==='available'?'Tercih kalitesi %'+Math.round(d.pref*100):d.status==='unavailable'?'Müsait değil':'Yanıt bekleniyor')+'</span></div>').join('')+'</div></div>':'';
-  return '<div class="tkw" style="'+(big?'':'margin-top:18px')+'"><article class="ticket '+(big?'':'sm ')+'t-'+(big?'purple':TKIND[1+((i-1)%5)])+(big?' reveal':'')+'"><div class="main">'
+  const picked=m.selectedCandidate&&m.selectedCandidate.key===c.key;
+  return '<div class="tkw'+(picked?' picked':'')+'" style="'+(big?'':'margin-top:18px')+'">'+(picked?'<span class="stamp-ok" aria-hidden="true">onaylandı</span>':'')+'<article class="ticket '+(big?'':'sm ')+'t-'+(big?'purple':TKIND[1+((i-1)%5)])+(big?' reveal':'')+'"><div class="main">'
     +(big?'<div class="badge">'+shape('best',20)+'EN İYİ SEÇENEK</div>':'<div class="row" style="margin-bottom:8px"><span class="rank">'+(i+1)+'</span></div>')
     +'<p class="tsub">'+DAY_NAMES[D.dow(c.date)]+' · '+D.month(c.date)+'</p><div class="tdate">'+D.day(c.date)+'</div><div class="ttime">'+(c.durationMinutes===1440?'tüm gün':c.start+' – '+c.end)+'</div><p class="tsub" style="margin-top:6px;opacity:.85">'+dur(c.durationMinutes)+'</p></div>'
     +'<div class="stub"><div><span class="lbl">Katılım</span><div class="bignum" style="font-size:'+(big?48:34)+'px;margin:6px 0">'+c.availableCount+'/'+c.totalParticipants+'</div><div class="meter" role="img" aria-label="Katılım yüzde '+pct+'"><i style="width:'+pct+'%"></i></div></div>'
@@ -1501,8 +1507,8 @@ function screenResults(m,ps,me){
     if(dg.windowsTooLong)o={title:'Süre saat aralığına sığmıyor',text:'Buluşma süresi ('+dur(m.durationMinutes)+') izin verilen saatlerden ('+m.earliestTime+'–'+m.latestTime+') uzun. Yeni bir buluşma oluşturup saatleri genişlet.',actions:'<a class="btn" href="#/create">Yeni buluşma</a>'};
     else if(dg.expired)o={title:'Tarih aralığı geçmişte kaldı',text:'Bu buluşmanın bütün günleri geçti. Yeni bir aralıkla yeniden başlayabilirsin.',actions:'<a class="btn" href="#/create">Yeni buluşma</a>'};
     else if(dg.submittedCount===0)o={title:'Henüz yanıt yok',text:'Kimse müsaitliğini tamamlamadı. Davet linkini paylaş ya da kendi yanıtını gir.',actions:'<a class="btn" href="#/m/'+m.code+'/avail">Müsaitliğimi gir</a><a class="btn ghost" href="#/m/'+m.code+'/invite">Daveti paylaş</a>',a:'pending',b:'pending',c:'pending'};
-    else if(dg.rejectedByRequired>0)o={title:'Zorunlu katılımcı müsait değil',text:'Zorunlu işaretli kişilerden en az biri, ortak olabilecek hiçbir zamanda müsait değil: '+esc(ps.filter(p=>p.isRequired).map(p=>p.displayName).join(', '))+'. Zorunluluğu kaldırabilir ya da onlardan yeni saatler isteyebilirsin.',actions:'<a class="btn" href="#/m/'+m.code+'/group">Grup görünümü</a><a class="btn ghost" href="#/m/'+m.code+'/invite">Katılımcılar</a>'};
-    else o={title:'Ortak zaman bulunamadı',text:'Henüz kimse, buluşma süresini kesintisiz kapsayan bir aralık işaretlemedi. Saatleri biraz daha geniş boyamak sorunu çözebilir.',actions:'<a class="btn" href="#/m/'+m.code+'/avail">Müsaitliğimi düzenle</a><a class="btn ghost" href="#/m/'+m.code+'/group">Grup görünümü</a>'};
+    else if(dg.rejectedByRequired>0)o={title:'Zorunlu katılımcı müsait değil',text:'Zorunlu işaretli kişilerden en az biri, ortak olabilecek hiçbir zamanda müsait değil: '+esc(ps.filter(p=>p.isRequired).map(p=>p.displayName).join(', '))+'. Zorunluluğu kaldırabilir ya da onlardan yeni saatler isteyebilirsin.',actions:'<a class="btn" href="#/m/'+m.code+'/results">Öneriler</a><a class="btn ghost" href="#/m/'+m.code+'/invite">Katılımcılar</a>'};
+    else o={title:'Ortak zaman bulunamadı',text:'Henüz kimse, buluşma süresini kesintisiz kapsayan bir aralık işaretlemedi. Saatleri biraz daha geniş boyamak sorunu çözebilir.',actions:'<a class="btn" href="#/m/'+m.code+'/avail">Müsaitliğimi düzenle</a><a class="btn ghost" href="#/m/'+m.code+'/results">Öneriler</a>'};
     inner=emptyState(o);
   }
   inner='<div class="row" style="margin-bottom:12px"><button class="btn sm ghost" data-act="copyResults">Sonuç linkini kopyala</button><span class="small muted">bu linki paylaşan herkes önerileri ve onayı görür</span></div>'+inner;
@@ -1537,7 +1543,7 @@ function screenConfirm(m,ps,me){
   const l2=(m.code+'<'+c.date.replace(/-/g,'')+'<'+c.start.replace(':','')+'<'+c.durationMinutes+'<'+yes+'<'+need.size).padEnd(40,'<').slice(0,40);
   const inner=(noReq.length?'<div class="note bad" style="margin-bottom:14px" role="alert"><b>'+esc(noReq.map(p=>p.displayName).join(', '))+'</b> zorunlu katılımcı ve gelemeyeceğini bildirdi. Organizatör zamanı değiştirebilir.</div>':'')
     +(c.provisional&&!confirmed?'<div class="note" style="margin-bottom:14px">Bu zaman, zorunlu katılımcıların yanıtı gelmeden seçildi.</div>':'')
-    +'<article class="visa reveal"><div class="vh"><span>BULUŞMA VİZESİ</span><b>gurupla</b></div>'
+    +'<div class="vize-cap"><button class="btn sm ghost vize-link" data-act="copyConfirmLink">Bağlantı</button><article class="visa reveal"><div class="vh"><span>BULUŞMA VİZESİ</span><b>gurupla</b></div>'
     +'<div class="vb"><div class="ph">'+shape('best',46)+'</div><dl>'
     +'<div class="full"><dt>Buluşma</dt><dd>'+esc(m.title)+'</dd></div>'
     +'<div><dt>Tarih</dt><dd class="big">'+D.day(c.date)+' '+D.month(c.date)+'</dd></div><div><dt>Saat</dt><dd class="big">'+c.start+'–'+c.end+'</dd></div>'
@@ -1545,10 +1551,10 @@ function screenConfirm(m,ps,me){
     +'<div class="full"><dt>Yer</dt><dd>'+(m.location?esc(m.location):'Henüz belirlenmedi')+'</dd></div></dl></div>'
     +'<div class="vp"><span class="lbl">Yolcular · '+yes+'/'+need.size+' onay</span><div class="vpl">'+pax+'</div></div>'
     +'<div class="mrz">'+l1+'<br>'+l2+'</div>'
-    +'<div class="vs'+(confirmed?' ok':'')+'"><span>'+(confirmed?'ONAYLANDI':'ONAY BEKLİYOR')+'</span><small>'+D.mid(c.date)+'</small></div></article>'
+    +'<div class="vs'+(confirmed?' ok':'')+'"><span>'+(confirmed?'ONAYLANDI':'ONAY BEKLİYOR')+'</span><small>'+D.mid(c.date)+'</small></div></article></div>'
+    +(me?'<div class="row" style="margin-top:14px"><button class="btn green'+(myf==='yes'?' on':'')+'" data-act="rsvp" data-v="yes" aria-pressed="'+(myf==='yes')+'">✓ onay</button><button class="btn coral'+(myf==='no'?' on':'')+'" data-act="rsvp" data-v="no" aria-pressed="'+(myf==='no')+'">✕ red</button></div>':'')
     +'<div class="panel mt" style="max-width:640px"><div class="row">'
-    +(me?'<button class="btn green'+(myf==='yes'?' on':'')+'" data-act="rsvp" data-v="yes" aria-pressed="'+(myf==='yes')+'">Geliyorum</button><button class="btn coral'+(myf==='no'?' on':'')+'" data-act="rsvp" data-v="no" aria-pressed="'+(myf==='no')+'">Gelemiyorum</button>':'')
-    +'<button class="btn ghost" data-act="icsDownload">Takvimime ekle</button><button class="btn ghost" data-act="copyConfirmLink">Bağlantı</button><button class="btn ghost" data-act="copyVize">Vizeyi kopyala</button></div>'
+    +'<button class="btn ghost" data-act="icsDownload">Takvimime ekle</button><button class="btn" data-act="copyVize">Vize çıkar</button></div>'
     +(waiting.length&&!confirmed?'<p class="small muted mt">Bekleyen: '+esc(waiting.join(', '))+'</p>':'')
     +(admin?'<hr style="border:0;border-top:2px dashed var(--border);margin:16px 0"><div class="row"><input id="f-loc2" class="inp" style="flex:1;min-width:150px" maxlength="80" placeholder="Yer" value="'+esc(m.location)+'" data-enter="saveLoc"><button class="btn sm" data-act="saveLoc">Yeri kaydet</button></div>'
       +'<div class="row mt"><button class="btn sm ghost" data-act="changeTime">Zamanı değiştir</button><button class="btn sm coral" data-act="cancelMeeting">İptal et</button></div>':'')
@@ -1556,55 +1562,26 @@ function screenConfirm(m,ps,me){
   S.justChose=false;
   $app.innerHTML=meetingShell(m,'confirm',inner,me,ps);
 }
-/* vize görseli: canvas ile çizilir, panoya PNG olarak kopyalanır */
-function vizeCanvas(m,c,ps,need){
-  const W=900,H=520,k=2,cv=document.createElement('canvas');
-  cv.width=W*k;cv.height=H*k;const g=cv.getContext('2d');g.scale(k,k);
-  const INK='#25212B',PURPLE='#5C32B5',PAPER='#FFF9EC',GREEN='#65D6A0',CORAL='#FF6257',GREY='#9a9097';
-  const F='Arial, Helvetica, sans-serif';
-  const rr=(x,y,w,h,r)=>{g.beginPath();g.moveTo(x+r,y);g.arcTo(x+w,y,x+w,y+h,r);g.arcTo(x+w,y+h,x,y+h,r);g.arcTo(x,y+h,x,y,r);g.arcTo(x,y,x+w,y,r);g.closePath();};
-  const yes=ps.filter(p=>need.has(p.id)&&p.finalConfirmation==='yes').length;
-  const confirmed=m.status==='confirmed';
-  g.fillStyle='#F5EBD6';g.fillRect(0,0,W,H);
-  rr(20,20,W-40,H-40,28);g.fillStyle=PAPER;g.fill();
-  g.save();rr(20,20,W-40,130,28);g.clip();g.fillStyle=PURPLE;g.fillRect(0,0,W,150);g.restore();
-  g.fillStyle=INK;g.fillRect(20,148,W-40,4);
-  rr(20,20,W-40,H-40,28);g.lineWidth=6;g.strokeStyle=INK;g.stroke();
-  g.fillStyle='#fff';g.font='800 40px '+F;g.textAlign='left';g.fillText('gurupla',60,92);
-  g.font='700 20px '+F;g.textAlign='right';g.fillText('buluşma vizesi',W-60,92);g.textAlign='left';
-  g.fillStyle=INK;g.font='800 44px '+F;g.fillText(m.title.slice(0,28),60,220);
-  const lab=(t,y)=>{g.fillStyle=GREY;g.font='700 18px '+F;g.fillText(t,60,y);};
-  const val=(t,y,sz)=>{g.fillStyle=INK;g.font='800 '+(sz||32)+'px '+F;g.fillText(t,60,y);};
-  lab('tarih',268);val(D.day(c.date)+' '+D.month(c.date)+' · '+DAY_NAMES[D.dow(c.date)],304);
-  lab('saat',358);val(c.start+'–'+c.end+' · '+dur(c.durationMinutes),394);
-  lab('yer',448);val(m.location||'henüz belirlenmedi',484,26);
-  g.fillStyle=GREY;g.font='700 18px '+F;g.fillText('yolcular · '+yes+'/'+need.size+' onay',520,268);
-  const list=ps.filter(p=>need.has(p.id));
-  list.slice(0,6).forEach((p,i)=>{
-    const y=306+i*34,f=p.finalConfirmation;
-    g.beginPath();g.arc(528,y-8,8,0,Math.PI*2);g.fillStyle=f==='yes'?GREEN:f==='no'?CORAL:'#E9E1D0';g.fill();g.lineWidth=2.5;g.strokeStyle=INK;g.stroke();
-    g.fillStyle=INK;g.font='700 24px '+F;g.fillText(p.displayName.slice(0,22),548,y);
-  });
-  if(list.length>6){g.fillStyle=GREY;g.font='700 20px '+F;g.fillText('+'+(list.length-6)+' kişi',548,306+6*34);}
-  g.fillStyle=GREY;g.font='700 18px '+F;g.fillText('kod',60,H-54);
-  g.fillStyle=INK;g.font='800 24px monospace';g.fillText(m.code,108,H-54);
-  rr(W-300,H-110,240,60,30);g.fillStyle=confirmed?GREEN:'#FFD54A';g.fill();g.lineWidth=4;g.strokeStyle=INK;g.stroke();
-  g.fillStyle=INK;g.font='800 24px '+F;g.textAlign='center';g.fillText(confirmed?'onaylandı':'onay bekliyor',W-180,H-72);g.textAlign='left';
-  return cv;
+/* vize görseli: ekrandaki kartın birebir kopyası (gölgesiyle), PNG */
+async function vizeBlob(el){
+  if(typeof html2canvas!=='function')throw new Error('görsel kütüphanesi yüklenemedi');
+  const cap=el.closest('.vize-cap')||el;
+  const cv=await html2canvas(cap,{scale:2,backgroundColor:'#F5EBD6',useCORS:true,logging:false,onclone:doc=>{const c=doc.querySelector('.vize-cap');if(c){c.style.paddingTop='28px';c.style.marginTop='0';}const b=doc.querySelector('.vize-link');if(b)b.style.display='none';}});
+  return new Promise((res,rej)=>cv.toBlob(b=>b?res(b):rej(new Error('png üretilemedi')),'image/png'));
 }
 ACTIONS.copyVize=async()=>{
-  const m=curMeeting(),c=m.selectedCandidate;if(!c){toast('Henüz bir tarih seçilmedi');return;}
-  const ps=DB.getParticipants(m.id),need=new Set(c.availableIds.concat(m.requiredParticipantIds));
-  const cv=vizeCanvas(m,c,ps,need);
-  const blobP=new Promise(res=>cv.toBlob(res,'image/png'));
+  const el=$('.visa');if(!el){toast('Önce bir tarih onaylanmalı');return;}
   try{
-    if(!navigator.clipboard||!window.ClipboardItem)throw new Error('pano desteklenmiyor');
-    await navigator.clipboard.write([new ClipboardItem({'image/png':blobP})]);
-    toast('Vize panoya kopyalandı');
-  }catch(e){
-    const b=await blobP;const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='gurupla-vize-'+m.code+'.png';a.click();
-    toast('Pano desteklenmedi, görsel indirildi');
-  }
+    const b=await vizeBlob(el);
+    try{
+      if(!navigator.clipboard||!window.ClipboardItem)throw new Error('pano yok');
+      await navigator.clipboard.write([new ClipboardItem({'image/png':b})]);
+      toast('Vize kopyalandı, istediğin yere yapıştır');
+    }catch(e){
+      const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='gurupla-vize-'+curMeeting().code+'.png';a.click();
+      toast('Pano desteklenmedi, vize png olarak indirildi');
+    }
+  }catch(e){console.error(e);toast('Vize görseli oluşturulamadı: '+e.message,3500);}
 };
 ACTIONS.rsvp=el=>{const m=curMeeting(),ps=DB.getParticipants(m.id),me=getMe(m,ps);const v=el.dataset.v;DB.saveConfirmation(me.id,me.finalConfirmation===v?null:v);render();toast(v==='yes'?'Geliyorsun':'Gelemeyeceğini bildirdin');};
 ACTIONS.copyConfirmLink=()=>{const m=curMeeting();copyText(location.href.split('#')[0]+'#/m/'+m.code+'/confirm');};
@@ -1640,10 +1617,9 @@ function screenMeeting(code,stage){
   if(!me){stateScreen({title:'Katılımcı yok',text:'Bu buluşmada henüz kimse yok.',actions:'<a class="btn" href="#/m/'+m.code+'/join">Katıl</a>'});return;}
   switch(stage){
     case 'avail':screenAvail(m,ps,me);break;
-    case 'group':screenGroup(m,ps,me);break;
     case 'results':screenResults(m,ps,me);break;
     case 'confirm':screenConfirm(m,ps,me);break;
-    default:screenInvite(m,ps,me);
+    default:if(isOrg(m,me))screenInvite(m,ps,me);else screenAvail(m,ps,me);
   }
 }
 async function render(fresh){
