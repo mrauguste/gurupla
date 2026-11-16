@@ -1563,7 +1563,7 @@ function screenConfirm(m,ps,me){
 }
 /* vize görseli: dikey kart, canvas'a çizilir (PNG) */
 function vizeBlob(m,c,ps,need){
-  const W=640,H=860,k=2,cv=document.createElement('canvas');
+  const W=640,H=960,k=2,cv=document.createElement('canvas');
   cv.width=W*k;cv.height=H*k;const g=cv.getContext('2d');g.scale(k,k);
   const INK='#25212B',PURPLE='#5C32B5',PAPER='#FFF9EC',BG='#F5EBD6',GREEN='#65D6A0',CORAL='#FF6257',GREY='#7d747c',OK='#2E8B5F';
   const F='Arial, Helvetica, sans-serif';
@@ -1606,7 +1606,7 @@ function vizeBlob(m,c,ps,need){
   T('yer',X,596,16,GREY);T(m.location||'henüz belirlenmedi',X,632,26,INK,'700');
   T('yolcular · '+yes+'/'+need.size+' onay',X,696,16,GREY);
   let px=X,py=716;
-  ps.filter(p=>need.has(p.id)).slice(0,8).forEach(p=>{
+  ps.filter(p=>need.has(p.id)).slice(0,9).forEach(p=>{
     const f=p.finalConfirmation,name=p.displayName.slice(0,16);
     g.font='700 20px '+F;const tw=g.measureText(name).width;const w=tw+52;
     if(px+w>W-60){px=X;py+=50;}
@@ -1614,9 +1614,8 @@ function vizeBlob(m,c,ps,need){
     g.beginPath();g.arc(px+20,py+19,8,0,Math.PI*2);g.fillStyle=f==='yes'?GREEN:f==='no'?CORAL:'#E9E1D0';g.fill();g.lineWidth=2;g.strokeStyle=INK;g.stroke();
     T(name,px+36,py+26,20,INK,'700');px+=w+10;
   });
+  if(need.size>9)T('+'+(need.size-9)+' kişi',X,py+64,18,GREY);
   // alt şerit
-  g.fillStyle='rgba(255,255,255,.8)';g.fillRect(CX,CY+CH-96,CW,76);
-  g.fillStyle=INK;g.fillRect(CX,CY+CH-96,CW,3);
   T('vs'+m.code.toLowerCase()+'<'+c.date.replace(/-/g,'')+'<'+c.start.replace(':','')+'<'+c.durationMinutes+'<'+yes+'<'+need.size,60,CY+CH-52,20,INK,'700');
   return new Promise((res,rej)=>cv.toBlob(b=>b?res(b):rej(new Error('png üretilemedi')),'image/png'));
 }
