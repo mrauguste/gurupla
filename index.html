@@ -38,6 +38,8 @@ a{color:var(--purple)}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 .muted{opacity:.72}.small{font-size:13px}.center{text-align:center}
 .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.between{justify-content:space-between}
+.sticky{flex-wrap:wrap;gap:10px}.sticky>*{flex:0 1 auto;max-width:100%}
+.stub{min-width:0}
 .stack{display:flex;flex-direction:column;gap:14px}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
 .mt{margin-top:18px}.mt2{margin-top:30px}
@@ -70,7 +72,7 @@ a{color:var(--purple)}
 .panel.flat{box-shadow:none}
 .panel h2{font-size:26px;margin-bottom:6px}
 .field{display:flex;flex-direction:column;gap:6px}
-.field label,.lbl{font:700 13px var(--f-display);letter-spacing:.06em;text-transform:uppercase;opacity:.75}
+.field label,.lbl{font:700 13px var(--f-display);letter-spacing:.06em;text-transform:none;opacity:.75}
 .inp{width:100%;min-height:48px;padding:10px 14px;background:#fff;border:2.5px solid var(--ink);border-radius:12px;box-shadow:inset 0 3px 0 rgba(37,33,43,.1);font-size:16px}
 .inp.xl{font:700 clamp(24px,5vw,36px) var(--f-display);min-height:64px;letter-spacing:-.02em}
 .err{color:#B42318;font-weight:700;font-size:14px;margin-top:4px}
@@ -91,8 +93,23 @@ a{color:var(--purple)}
 
 /* ---------- tipografi ---------- */
 .display{font-weight:700;font-size:clamp(46px,10vw,104px);line-height:.92;letter-spacing:-.045em}
-.kicker{font:700 13px var(--f-display);letter-spacing:.14em;text-transform:uppercase;color:var(--purple)}
+.kicker{font:700 15px var(--f-display);letter-spacing:0;text-transform:none;color:var(--purple)}
 .lead{font-size:clamp(17px,2.4vw,21px);max-width:34ch}
+.intro-note{margin-top:22px;max-width:44ch;font-size:17px;line-height:1.5;color:var(--ink)}
+.intro-note b{font-weight:700}
+.lc{text-transform:lowercase}
+.rbar{position:relative;height:12px;background:var(--ink);border-radius:99px;margin:18px 11px 4px}
+.rbar .rfill{position:absolute;left:0;top:0;bottom:0;background:var(--purple);border-radius:99px;opacity:.35}
+.rbar .rd{position:absolute;top:50%;width:24px;height:24px;margin:-12px 0 0 -12px;border-radius:50%;background:var(--purple);border:3px solid var(--ink)}
+.drow{display:flex;flex-wrap:wrap;gap:12px}
+.hbar .rfill{background:var(--cyan);opacity:1}
+.hbar .rd{background:var(--cyan)}
+.drow .field{min-width:0;flex:0 1 auto}
+.date-inp{width:176px;max-width:100%;box-sizing:border-box;text-align:center;padding-left:8px;padding-right:8px;min-width:0}
+body{text-transform:lowercase}
+.btn,button{text-transform:none}
+.trust{display:flex;flex-wrap:wrap;gap:8px 22px;margin-top:30px;font-size:13px;color:var(--ink);opacity:.75}
+.trust span{display:inline-flex;align-items:center;gap:7px}
 .bignum{font-family:var(--f-display);font-weight:700;letter-spacing:-.05em;line-height:.85}
 
 /* ---------- landing ---------- */
@@ -161,7 +178,16 @@ a{color:var(--purple)}
 .phead .cnt{margin-left:auto}
 .phead .chev{transition:transform .2s;font-size:14px}
 .period.open .chev{transform:rotate(180deg)}
-.pbody{display:none;padding:4px 12px 14px;border-top:2px dashed var(--border)}
+.avfoot{display:flex;align-items:center;justify-content:flex-end;gap:10px;margin-top:18px;flex-wrap:wrap}
+.avfoot>.btn{margin-right:auto}
+.avfoot .avday{font:700 15px var(--f-display);color:var(--ink);white-space:nowrap}
+.avfoot .larr{width:44px;height:44px}
+.lcal{text-align:center}
+.pline{display:flex;align-items:stretch;gap:10px;margin-top:14px}
+.pvert{writing-mode:vertical-rl;transform:rotate(180deg);font:600 12px var(--f-display);color:var(--ink);opacity:.55;border-right:1.5px dashed var(--ink);padding-right:8px;white-space:nowrap}
+.pline{align-items:flex-start}
+.pline .slots{flex:1;min-width:0;padding-top:0;align-content:start;grid-auto-rows:64px}
+.pline .slot{height:64px;min-height:0}
 .period.open .pbody{display:block}
 .slots{display:grid;grid-template-columns:repeat(auto-fill,minmax(70px,1fr));gap:9px;padding-top:12px;touch-action:none;user-select:none;-webkit-user-select:none}
 .slot{position:relative;min-height:48px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;border:2.5px solid var(--ink);border-radius:12px;background:var(--paper);box-shadow:0 4px 0 var(--ink);cursor:pointer;font:700 15px var(--f-display);transition:transform .12s var(--ease),box-shadow .12s var(--ease),background .12s;touch-action:none}
@@ -185,7 +211,7 @@ a{color:var(--purple)}
 .ticket .tdate{font:700 clamp(64px,13vw,128px)/0.82 var(--f-display);letter-spacing:-.06em}
 .ticket.sm .tdate{font-size:clamp(44px,9vw,64px)}
 .ticket .ttime{font:700 clamp(22px,4vw,34px) var(--f-display);letter-spacing:-.03em;margin-top:8px}
-.ticket .tsub{font:700 15px var(--f-display);letter-spacing:.04em;text-transform:uppercase}
+.ticket .tsub{font:700 15px var(--f-display);letter-spacing:0;text-transform:none}
 .ticket.sm{box-shadow:4px 4px 0 var(--ink)}
 .ticket.sm .main{padding:16px 18px}.ticket.sm .stub{padding:14px 16px}
 .badge{display:inline-flex;align-items:center;gap:8px;background:var(--paper-light);color:var(--ink);border:2.5px solid var(--ink);border-radius:10px;padding:5px 12px 5px 8px;font:700 13px var(--f-display);letter-spacing:.08em;box-shadow:2px 2px 0 var(--ink);margin-bottom:12px}
@@ -239,7 +265,7 @@ a{color:var(--purple)}
 .hourbar i{position:absolute;top:0;bottom:0;background:var(--cyan);border-left:2.5px solid var(--ink);border-right:2.5px solid var(--ink)}
 
 /* ---------- responsive ---------- */
-.two{display:grid;grid-template-columns:minmax(300px,420px) 1fr;gap:26px;align-items:start}
+.two{display:grid;grid-template-columns:minmax(440px,520px) 1fr;gap:26px;align-items:start}
 .two>*,.grid2>*{min-width:0}
 @media (max-width:860px){
   .hero{grid-template-columns:1fr}.hero-cal{order:-1;max-width:420px;margin:0 auto;width:100%}
@@ -279,8 +305,8 @@ a{color:var(--purple)}
 /* ===== lineer takvim ===== */
 .lcal{width:100%;max-width:720px;margin:0 auto}
 .lhead{display:flex;align-items:baseline;justify-content:center;gap:10px;margin-bottom:10px;font-family:var(--f-display)}
-.lhead .lmon{font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--purple)}
-.lhead .lwd{font-size:22px;font-weight:700;letter-spacing:-.02em}
+.lhead .lmon{display:none}
+.lhead .lwd{font-size:20px;font-weight:700;letter-spacing:-.01em;color:var(--ink)}
 .lrow{display:flex;align-items:center;gap:8px}
 .larr{flex:none;width:48px;height:48px;display:grid;place-items:center;border:2.5px solid var(--ink);border-radius:14px;background:var(--paper-light);color:var(--ink);cursor:pointer;box-shadow:0 4px 0 var(--ink);transition:transform .12s var(--ease),box-shadow .12s var(--ease)}
 .larr:active{transform:translateY(3px);box-shadow:0 1px 0 var(--ink)}
@@ -330,7 +356,7 @@ a{color:var(--purple)}
 .visa .vb{display:grid;grid-template-columns:96px 1fr;gap:16px;padding:18px}
 .visa .ph{height:118px;border:2.5px solid var(--ink);border-radius:10px;background:repeating-linear-gradient(135deg,#fff 0 6px,#EFE5CF 6px 12px);display:grid;place-items:center}
 .visa dl{margin:0;display:grid;grid-template-columns:1fr 1fr;gap:10px 14px}
-.visa dt{font:700 10px var(--f-display);letter-spacing:.14em;text-transform:uppercase;opacity:.6}
+.visa dt{font:700 12px var(--f-display);letter-spacing:0;text-transform:none;opacity:.6}
 .visa dd{margin:1px 0 0;font:700 20px/1.1 var(--f-display);letter-spacing:-.02em;word-break:break-word}
 .visa dd.big{font-size:30px}
 .visa .full{grid-column:1/3}
@@ -396,6 +422,7 @@ function evalParticipant(p,date,sMin,eMin){
   const dayPref=(av&&av.dayPreference)||'unanswered';
   if(dayPref==='unavailable')return {status:'unavailable'};
   if(dayPref==='unanswered')return {status:'pending'};
+  if(eMin-sMin>=1440)return {status:'available',dayScore:PREF_SCORE[dayPref],timeScore:1,pref:PREF_SCORE[dayPref]*W_DAY+W_TIME,fullyPreferred:dayPref==='preferred'};
   let sum=0,n=0;
   for(let m=sMin;m<eMin;m+=30){
     const st=av.slots&&av.slots[T.fmt(m)];
@@ -730,7 +757,7 @@ const DB={
       m.selectedCandidate={key:candidate.key,date:candidate.date,start:candidate.start,end:candidate.end,durationMinutes:candidate.durationMinutes,availableIds:candidate.availableIds.slice(),provisional:!!candidate.provisional,chosenAt:new Date().toISOString()};
       m.status='pending_confirmation';
       const org=CACHE.participants[m.organizerId];
-      if(org&&candidate.availableIds.includes(org.id)){org.finalConfirmation='yes';W(()=>sb.from('participants').update({final_confirmation:'yes'}).eq('id',org.id));}
+      candidate.availableIds.forEach(id=>{const q=CACHE.participants[id];if(q){q.finalConfirmation='yes';W(()=>sb.from('participants').update({final_confirmation:'yes'}).eq('id',id));}});
       const sc=m.selectedCandidate;
       W(()=>sb.from('meetings').update({selected_candidate:sc,status:'pending_confirmation'}).eq('id',meetingId));
     }else{
@@ -928,16 +955,17 @@ function lineCalendar(o){
   const dates=o.dates,N=dates.length;let sel=Math.min(Math.max(o.selected||0,0),N-1);
   const el=document.createElement('div');el.className='lcal';
   const arr=(d,l)=>'<button class="larr" data-lc="'+d+'" aria-label="'+l+'"><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path d="'+(d<0?'M15 5l-7 7 7 7':'M9 5l7 7-7 7')+'" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>';
-  el.innerHTML='<div class="lhead"><span class="lmon"></span><span class="lwd"></span></div><div class="lrow">'+arr(-1,'Önceki gün')
+  const showArr=o.arrows!==false;
+  el.innerHTML='<div class="lhead"><span class="lmon"></span><span class="lwd"></span></div><div class="lrow">'+(showArr?arr(-1,'Önceki gün'):'')
     +'<div class="lview" tabindex="0" role="listbox" aria-label="Günler. Sol ve sağ ok tuşlarıyla gün değiştir."><div class="ltrack">'
     +dates.map((d,i)=>'<button class="st'+((D.dow(d)===0||D.dow(d)===6)?' wk':'')+'" role="option" data-i="'+i+'" aria-label="'+esc(D.long(d))+'" tabindex="-1"><small>'+DAY_SHORT[D.dow(d)]+'</small><span class="nd">'+D.day(d)+'</span><span class="sh" data-shp="'+i+'"></span></button>').join('')
-    +'</div></div>'+arr(1,'Sonraki gün')+'</div>';
+    +'</div></div>'+(showArr?arr(1,'Sonraki gün'):'')+'</div>';
   const view=$('.lview',el),track=$('.ltrack',el),btns=$$('.st',el);
   function pos(){const w=view.clientWidth;track.style.transform='translateX('+Math.round(w/2-(sel+0.5)*60)+'px)';}
   function paint(){
     btns.forEach((b,i)=>{b.classList.toggle('cur',i===sel);b.setAttribute('aria-selected',String(i===sel));});
-    const d=dates[sel];$('.lmon',el).textContent=D.month(d)+' '+d.slice(0,4);$('.lwd',el).textContent=DAY_NAMES[D.dow(d)]+' '+D.day(d);
-    $$('.larr',el)[0].disabled=sel<=0;$$('.larr',el)[1].disabled=sel>=N-1;pos();
+    const d=dates[sel];$('.lwd',el).textContent=D.day(d)+' '+D.month(d)+' '+DAY_NAMES[D.dow(d)];
+    $$('.larr',el).forEach((b,i)=>{b.disabled=i===0?sel<=0:sel>=N-1;});pos();
   }
   function setSelected(i){if(i<0||i>=N)return;sel=i;paint();}
   function setStates(fn){$$('[data-shp]',el).forEach(g=>{const k=fn(+g.dataset.shp);g.innerHTML=k?shape(k,16):'';});}
@@ -949,6 +977,15 @@ function lineCalendar(o){
     let n=null;if(e.key==='ArrowRight')n=Math.min(N-1,sel+1);else if(e.key==='ArrowLeft')n=Math.max(0,sel-1);
     if(n!==null){e.preventDefault();if(o.onSelect)o.onSelect(n);}
   });
+  let dx0=null,sel0=0;
+  view.addEventListener('pointerdown',ev=>{dx0=ev.clientX;sel0=sel;});
+  view.addEventListener('pointermove',ev=>{
+    if(dx0===null||Math.abs(ev.clientX-dx0)<8)return;
+    const n=Math.max(0,Math.min(N-1,sel0-Math.round((ev.clientX-dx0)/60)));
+    if(n!==sel&&o.onSelect)o.onSelect(n);
+  });
+  const endDrag=()=>{dx0=null;};
+  view.addEventListener('pointerup',endDrag);view.addEventListener('pointercancel',endDrag);
   track.style.transition='none';paint();
   requestAnimationFrame(()=>{pos();requestAnimationFrame(()=>{track.style.transition='';});});
   window.addEventListener('resize',pos);
@@ -985,7 +1022,8 @@ const isOrg=(m,me)=>!!me&&m.organizerId===me.id;
 const initials=n=>esc(n.trim().charAt(0).toLocaleUpperCase('tr'));
 const AV_COLORS=['var(--green)','var(--yellow)','var(--cyan)','var(--pink)','var(--coral)','#B9A2F2'];
 const avatar=(p,i)=>'<span class="avatar" style="background:'+AV_COLORS[i%AV_COLORS.length]+'" aria-hidden="true">'+initials(p.displayName)+'</span>';
-const dur=min=>min%60===0?(min/60)+' saat':(min<60?min+' dk':Math.floor(min/60)+' sa '+(min%60)+' dk');
+const allDayM=m=>m.durationMinutes===1440;
+const dur=min=>min===1440?'tüm gün':min%60===0?(min/60)+' saat':(min<60?min+' dk':Math.floor(min/60)+' sa '+(min%60)+' dk');
 const rangeLabel=m=>D.mid(m.startDate)+' – '+D.mid(m.endDate);
 const inviteLink=m=>location.href.split('#')[0]+'#/m/'+m.code+'/join';
 
@@ -993,8 +1031,8 @@ const STAGES=[['invite','Davet'],['avail','Müsaitlik'],['group','Grup'],['resul
 function meetingShell(m,stage,inner,me,ps){
   const nav='<nav class="stages" aria-label="Aşamalar">'+STAGES.map((s,i)=>'<a class="stage'+(s[0]===stage?' cur':'')+'" href="#/m/'+m.code+'/'+s[0]+'"'+(s[0]===stage?' aria-current="page"':'')+'><i>'+(i+1)+'</i>'+s[1]+'</a>').join('')+'</nav>';
   const chipCls={confirmed:'g',cancelled:'c',pending_confirmation:'y',results_ready:'b'}[m.status]||'';
-  const who='<label class="who">Katılımcı: <select data-change="switchMe" aria-label="Katılımcı seç">'+ps.map(p=>'<option value="'+p.id+'"'+(me&&p.id===me.id?' selected':'')+'>'+esc(p.displayName)+(p.id===m.organizerId?' (organizatör)':'')+'</option>').join('')+'</select></label>';
-  return shell(nav+'<div class="mhead"><div><span class="chip '+chipCls+'">'+STATUS_LABEL[m.status]+'</span><h1 style="margin-top:8px">'+esc(m.title)+'</h1><p class="muted small mt" style="margin-top:6px">'+rangeLabel(m)+' · '+dur(m.durationMinutes)+' · '+m.earliestTime+'–'+m.latestTime+(m.location?' · '+esc(m.location):'')+'</p></div>'+who+'</div>'+inner);
+  const who='';
+  return shell(nav+'<div class="mhead"><div><span class="chip '+chipCls+'">'+STATUS_LABEL[m.status]+'</span><h1 style="margin-top:8px">'+esc(m.title)+'</h1><p class="muted small mt" style="margin-top:6px">'+rangeLabel(m)+' · '+dur(m.durationMinutes)+(allDayM(m)?'':' · '+m.earliestTime+'–'+m.latestTime)+(m.location?' · '+esc(m.location):'')+'</p></div>'+who+'</div>'+inner);
 }
 CHANGES.switchMe=el=>{const s=seg();const m=DB.getMeeting(s[1]);if(m){Session.set(m.id,el.value);render();}};
 ACTIONS.resetAll=async()=>{if(await dialog({title:'Tüm veriler silinsin mi?',text:'Bu tarayıcıdaki bütün buluşmalar ve yanıtlar kalıcı olarak silinir.',ok:'Evet, sil',tone:'coral'})){DB.resetAll();try{localStorage.removeItem('gurupla.session');}catch(e){}toast('Tüm veriler silindi');go('');}};
@@ -1006,14 +1044,14 @@ document.addEventListener('keydown',e=>{if(e.key==='Enter'){const el=e.target.cl
 
 /* ---- LANDING ---- */
 function screenLanding(){
-  const dates=D.range(D.today(),D.add(D.today(),13));
   const ms=DB.listMeetings();
   const list=ms.length?'<section aria-label="Bu tarayıcıdaki buluşmalar" class="mt2"><p class="lbl" style="margin-bottom:10px">Buluşmaların</p><div class="mlist">'+ms.map(m=>'<div class="mcard"><b>'+esc(m.title)+'</b><span class="small muted">'+m.code+' · '+STATUS_LABEL[m.status]+'</span><div class="row"><a class="btn sm" href="#/m/'+m.code+'/'+(m.status==='confirmed'||m.status==='pending_confirmation'?'confirm':'invite')+'">Aç</a><button class="btn sm ghost" data-act="delMeeting" data-id="'+m.id+'">Sil</button></div></div>').join('')+'</div></section>':'';
-  $app.innerHTML=shell('<section class="hero"><h1 class="display">Ne zaman<br>buluşuyoruz?</h1><p class="lead" style="margin-top:16px">Ortak zamanı birlikte bulalım.</p>'
-    +'<div class="cta"><button class="btn big" data-act="goCreate">Buluşma oluştur</button><button class="btn big cyan" data-act="goJoin">Buluşmaya katıl</button></div></section>'
-    +'<section class="panel mt2"><div id="heroCal"></div></section>'+list);
-  const cal=lineCalendar({dates,selected:0,onSelect:i=>cal.setSelected(i)});
-  $('#heroCal').appendChild(cal.el);
+  $app.innerHTML=shell('<div class="lc"><section class="hero"><h1 class="display">Ne zaman<br>buluşuyoruz?</h1><p class="lead" style="margin-top:16px">Bir araya gelmek için hemen gurupla!</p>'
+    +'<div class="cta"><button class="btn big" data-act="goCreate">Buluşma oluştur</button><button class="btn big cyan" data-act="goJoin">Buluşmaya katıl</button></div>'
+    +'<p class="intro-note">Kiminle, nerede ve ne zaman buluşacağına biz karar veremeyiz, ama ortak zamanı bulmakta yardımcı olabiliriz. Yukarıdaki <b>Buluşma oluştur</b>a dokun, gerisi kolay.</p>'
+    +'<p class="intro-note">Elinde kod ya da link varsa <b>Buluşmaya katıl</b>a dokun, takvimini hemen ekle.</p>'
+    +'<div class="trust"><span><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8.2-7 9.5-4-1.3-7-5-7-9.5V6l7-3z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>veriler yalnızca bu buluşma için kullanılır</span><span><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M9 8h6M9 12h6M9 16h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>kvkk kapsamında işlenir, istenirse silinir</span></div></section>'
+    +list+'</div>');
 }
 ACTIONS.goCreate=()=>{S.draft=null;go('create');};
 ACTIONS.goJoin=()=>go('join');
@@ -1021,7 +1059,7 @@ ACTIONS.goJoin=()=>go('join');
 ACTIONS.delMeeting=async el=>{if(await dialog({title:'Buluşma silinsin mi?',text:'Bu buluşma ve tüm yanıtlar bu tarayıcıdan silinir.',ok:'Sil',tone:'coral'})){DB.deleteMeeting(el.dataset.id);render();}};
 
 /* ---- BULUŞMA OLUŞTUR (adım adım, makine paneli gibi) ---- */
-const DURS=[[30,'preferred','30 dk'],[60,'possible','1 saat'],[90,'unavailable','1,5 saat'],[120,'best','2 saat'],[180,'preferred','3 saat']];
+const DURS=[[30,'preferred','30 dk'],[60,'possible','1 saat'],[90,'unavailable','1,5 saat'],[120,'best','2 saat'],[180,'preferred','3 saat'],[1440,'possible','tüm gün']];
 function newDraft(){const t=D.today();return {step:1,title:'',organizer:'',description:'',duration:120,startDate:t,endDate:D.add(t,13),earliest:'08:00',latest:'24:00',location:'',errors:{}};}
 function screenCreate(){
   const d=S.draft||(S.draft=newDraft());const er=d.errors||{};
@@ -1031,22 +1069,28 @@ function screenCreate(){
     body='<h2>Ne için buluşuyoruz?</h2><div class="stack mt">'
      +'<div class="field"><label for="f-title">Buluşmanın adı</label><input id="f-title" class="inp xl" data-bind="title" value="'+esc(d.title)+'" maxlength="80" placeholder="Akşam yemeği" autocomplete="off">'+(er.title?'<div class="err" role="alert">'+esc(er.title)+'</div>':'')+'</div>'
      +'<div class="field"><label for="f-org">Senin adın (organizatör)</label><input id="f-org" class="inp" data-bind="organizer" value="'+esc(d.organizer)+'" maxlength="40" placeholder="Adın" autocomplete="off">'+(er.organizer?'<div class="err" role="alert">'+esc(er.organizer)+'</div>':'')+'</div>'
-     +'<div class="field"><label for="f-desc">Not (isteğe bağlı)</label><textarea id="f-desc" class="inp" rows="2" data-bind="description" maxlength="240">'+esc(d.description)+'</textarea></div></div>';
+     +'<div class="field"><label for="f-desc">Not (herkes bunu link paylaşımında görür)</label><textarea id="f-desc" class="inp" rows="2" data-bind="description" maxlength="240">'+esc(d.description)+'</textarea></div></div>';
   }else if(d.step===2){
-    body='<h2>Ne kadar sürecek?</h2><div class="durs mt" role="radiogroup" aria-label="Süre">'+DURS.map(x=>'<button class="dur'+(d.duration===x[0]?' on':'')+'" role="radio" aria-checked="'+(d.duration===x[0])+'" data-act="setDur" data-v="'+x[0]+'">'+shape(x[1],26)+x[2]+'</button>').join('')+'</div>';
+    body='<h2>Ne kadar sürecek?</h2><div class="durs mt" role="radiogroup" aria-label="Süre">'+DURS.map(x=>'<button class="dur'+(d.duration===x[0]?' on':'')+'" role="radio" aria-checked="'+(d.duration===x[0])+'" data-act="setDur" data-v="'+x[0]+'">'+shape(x[1],26)+x[2]+'</button>').join('')+'</div><p class="intro-note" style="font-size:15px;margin-top:14px">tüm gün seçersen saat sormuyoruz, sadece hangi günlerin uygun olduğunu topluyoruz. detayı sonra birlikte konuşursunuz.</p>';
   }else if(d.step===3){
-    const dates=D.range(d.startDate,d.endDate);
-    body='<h2>Hangi günler arasında?</h2><div class="stack mt"><div class="stack">'
-     +'<div class="grid2" style="gap:10px"><div class="field"><label for="f-s">Başlangıç</label><input id="f-s" type="date" class="inp" data-change="startDate" value="'+d.startDate+'" min="'+D.today()+'"></div><div class="field"><label for="f-e">Bitiş</label><input id="f-e" type="date" class="inp" data-change="endDate" value="'+d.endDate+'" min="'+d.startDate+'"></div></div>'
-     +'<div class="row" role="group" aria-label="Hızlı aralık">'+[7,14,21,28].map(n=>'<button class="btn sm ghost" data-act="setSpan" data-n="'+n+'">'+n+' gün</button>').join('')+'</div>'
+    const dates=D.range(d.startDate,d.endDate),n=dates.length,pct=Math.min(100,n/30*100);
+    body='<h2>Hangi günler arasında?</h2><div class="stack mt">'
+     +'<div class="rbar" id="rbar"><i class="rfill" id="rfill"></i><b class="rd" data-rb="s" id="rbs" role="slider" tabindex="0" aria-label="başlangıç günü"></b><b class="rd" data-rb="e" id="rbe" role="slider" tabindex="0" aria-label="bitiş günü"></b></div>'
+     +'<div class="row between small muted" style="margin-top:-4px"><span>bugün</span><span>29 gün sonra</span></div>'
+     +'<p class="intro-note" style="font-size:15px;margin:6px 0 0">takvimde kaç gün açık olsun, aşağıdan seç. kısa da olur, uzun da.</p>'
+     +'<div class="row" role="group" aria-label="Hızlı aralık" style="flex-wrap:wrap;gap:8px">'+[3,5,7,10,15,21,30].map(k=>'<button class="btn sm ghost" data-act="setSpan" data-n="'+k+'">'+k+' gün</button>').join('')+'</div>'
      +(er.dates?'<div class="err" role="alert">'+esc(er.dates)+'</div>':'')
-     +'<p class="small muted">'+(dates.length?dates.length+' gün seçili. En fazla 28 gün.':'Geçerli bir aralık seç.')+'</p></div><div id="rangeCal"></div></div>';
+     +'<p class="small muted" id="rcount">'+(n?n+' gün seçili. En fazla 30 gün.':'Geçerli bir aralık seç.')+'</p>'
+     +'<div class="drow"><div class="field"><label for="f-s">Başlangıç</label><input id="f-s" type="date" class="inp date-inp" data-change="startDate" value="'+d.startDate+'" min="'+D.today()+'"></div><div class="field"><label for="f-e">Bitiş</label><input id="f-e" type="date" class="inp date-inp" data-change="endDate" value="'+d.endDate+'" min="'+d.startDate+'"></div></div></div>';
+  }else if(d.duration===1440){
+    body='<h2>Tüm gün</h2><p class="muted mt">Katılımcılar sadece gün seçecek, saat sorulmayacak.</p>';
   }else{
     const e=T.toMin(d.earliest),l=T.toMin(d.latest);
-    body='<h2>Hangi saatler uygun?</h2><div class="stack mt"><div class="row" style="gap:26px">'
-     +'<div class="field"><span class="lbl">En erken</span><div class="hourctl"><button class="btn sm ghost" data-act="hour" data-k="earliest" data-d="-30" aria-label="En erken saati azalt">−</button><div class="odo" aria-live="polite">'+d.earliest+'</div><button class="btn sm ghost" data-act="hour" data-k="earliest" data-d="30" aria-label="En erken saati artır">+</button></div></div>'
-     +'<div class="field"><span class="lbl">En geç bitiş</span><div class="hourctl"><button class="btn sm ghost" data-act="hour" data-k="latest" data-d="-30" aria-label="En geç saati azalt">−</button><div class="odo" aria-live="polite">'+d.latest+'</div><button class="btn sm ghost" data-act="hour" data-k="latest" data-d="30" aria-label="En geç saati artır">+</button></div></div></div>'
-     +'<div class="hourbar" aria-hidden="true"><i style="left:'+(e/14.4)+'%;width:'+((l-e)/14.4)+'%"></i></div><div class="row between small muted"><span>00:00</span><span>12:00</span><span>24:00</span></div>'
+    body='<h2>Hangi saatler uygun?</h2><p class="intro-note" style="font-size:15px;margin:8px 0 0">en erken ve en geç saati seç. katılımcılar sadece bu aralıkta işaretleyecek.</p><div class="stack mt"><div class="row" style="gap:26px">'
+     +'<div class="field"><span class="lbl">En erken</span><div class="hourctl"><button class="btn sm ghost" data-hold="1" data-k="earliest" data-d="-30" aria-label="En erken saati azalt">−</button><div class="odo" id="odoE" aria-live="polite">'+d.earliest+'</div><button class="btn sm ghost" data-hold="1" data-k="earliest" data-d="30" aria-label="En erken saati artır">+</button></div></div>'
+     +'<div class="field"><span class="lbl">En geç</span><div class="hourctl"><button class="btn sm ghost" data-hold="1" data-k="latest" data-d="-30" aria-label="En geç saati azalt">−</button><div class="odo" id="odoL" aria-live="polite">'+d.latest+'</div><button class="btn sm ghost" data-hold="1" data-k="latest" data-d="30" aria-label="En geç saati artır">+</button></div></div></div>'
+     +'<div class="rbar hbar" id="hbar"><i class="rfill" id="hfill"></i><b class="rd" data-hb="e" id="hbe" role="slider" tabindex="0" aria-label="en erken saat"></b><b class="rd" data-hb="l" id="hbl" role="slider" tabindex="0" aria-label="en geç saat"></b></div>'
+     +'<div class="row between small muted" style="margin-top:-4px"><span>00:00</span><span>12:00</span><span>24:00</span></div>'
      +(er.hours?'<div class="err" role="alert">'+esc(er.hours)+'</div>':'')
      +'<div class="field"><label for="f-loc">Yer (isteğe bağlı)</label><input id="f-loc" class="inp" data-bind="location" value="'+esc(d.location)+'" maxlength="80" placeholder="Karaköy"></div>'
      +'<div class="note info"><b>'+esc(d.title||'Buluşma')+'</b> · '+dur(d.duration)+' · '+D.mid(d.startDate)+' – '+D.mid(d.endDate)+' · '+d.earliest+'–'+d.latest+'</div></div>';
@@ -1054,15 +1098,104 @@ function screenCreate(){
   const back=d.step>1?'<button class="btn ghost" data-act="cStep" data-d="-1">Geri</button>':'<a class="btn ghost" href="#/">Vazgeç</a>';
   const next=d.step<4?'<button class="btn" data-act="cStep" data-d="1">İleri</button>':'<button class="btn green big" data-act="cCreate">Buluşmayı oluştur</button>';
   $app.innerHTML=shell('<div style="max-width:760px;margin:0 auto"><div class="row between" style="margin-bottom:14px"><p class="kicker">Yeni buluşma · adım '+d.step+'/4</p>'+dots+'</div><section class="panel rivets">'+body+'</section><div class="row between mt sticky">'+back+next+'</div></div>');
-  if(d.step===3){
-    const dates=D.range(d.startDate,d.endDate);
-    if(dates.length>0&&dates.length<=28){const cal=lineCalendar({dates,selected:0,onSelect:i=>cal.setSelected(i)});$('#rangeCal').appendChild(cal.el);}
-  }
   if(d.step===1){const f=$('#f-title');if(f&&!d.title)f.focus();}
+  if(d.step===3)bindRangeBar();
+  if(d.step===4&&d.duration!==1440)bindHourBar();
+}
+/* saat barı + basılı tutunca hızlanan +/- */
+const HB_STEP=30;
+function hbPaint(){
+  const d=S.draft;if(!d||!$('#hbar'))return;
+  const e=T.toMin(d.earliest),l=T.toMin(d.latest);
+  $('#odoE').textContent=d.earliest;$('#odoL').textContent=d.latest;
+  $('#hbe').style.left=(e/1440*100)+'%';$('#hbl').style.left=(l/1440*100)+'%';
+  const f=$('#hfill');f.style.left=(e/1440*100)+'%';f.style.width=((l-e)/1440*100)+'%';
+}
+function hbSet(k,v){
+  const d=S.draft;let e=T.toMin(d.earliest),l=T.toMin(d.latest);
+  if(k==='e')e=Math.max(0,Math.min(l-HB_STEP,v));else l=Math.min(1440,Math.max(e+HB_STEP,v));
+  d.earliest=T.fmt(e);d.latest=T.fmt(l);d.errors={};hbPaint();
+}
+function hourStep(k,dl){
+  const d=S.draft;let e=T.toMin(d.earliest),l=T.toMin(d.latest);
+  if(k==='earliest')hbSet('e',e+dl);else hbSet('l',l+dl);
+}
+let holdT=null;
+function stopHold(){if(holdT){clearTimeout(holdT);holdT=null;render();}}
+document.addEventListener('pointerdown',ev=>{
+  const b=ev.target.closest('[data-hold]');if(!b||!S.draft||!$app.contains(b))return;
+  ev.preventDefault();
+  const k=b.dataset.k,dl=+b.dataset.d,t0=Date.now();
+  hourStep(k,dl);
+  const tick=()=>{hourStep(k,dl);const el=Date.now()-t0;holdT=setTimeout(tick,el<700?220:el<1600?120:60);};
+  holdT=setTimeout(tick,380);
+});
+document.addEventListener('pointerup',stopHold);
+document.addEventListener('pointercancel',stopHold);
+function bindHourBar(){
+  const bar=$('#hbar');if(!bar)return;
+  hbPaint();
+  bar.addEventListener('pointerdown',ev=>{
+    ev.preventDefault();
+    const d=S.draft,r=bar.getBoundingClientRect(),f=Math.max(0,Math.min(1,(ev.clientX-r.left)/r.width));
+    const t=Math.round(f*1440/HB_STEP)*HB_STEP;
+    const de=Math.abs(T.toMin(d.earliest)-t),dl=Math.abs(T.toMin(d.latest)-t);
+    S.hbDrag=de<=dl?'e':'l';bar.setPointerCapture(ev.pointerId);
+    hbSet(S.hbDrag,t);
+  });
+  bar.addEventListener('pointermove',ev=>{
+    if(!S.hbDrag)return;
+    const r=bar.getBoundingClientRect(),f=Math.max(0,Math.min(1,(ev.clientX-r.left)/r.width));
+    hbSet(S.hbDrag,Math.round(f*1440/HB_STEP)*HB_STEP);
+  });
+  const stop=()=>{if(S.hbDrag){S.hbDrag=null;render();}};
+  bar.addEventListener('pointerup',stop);bar.addEventListener('pointercancel',stop);
+}
+/* aralık barı: iki mor top, bugünden itibaren 30 günlük ölçek (0..29) */
+const RB_SPAN=29;
+function rbIdx(date){return Math.max(0,Math.min(RB_SPAN,D.diff(D.today(),date)));}
+function rbPaint(){
+  const d=S.draft;if(!d)return;const bar=$('#rbar');if(!bar)return;
+  const si=rbIdx(d.startDate),ei=rbIdx(d.endDate),n=D.range(d.startDate,d.endDate).length;
+  const ls=si/RB_SPAN*100,le=ei/RB_SPAN*100;
+  $('#rbs').style.left=ls+'%';$('#rbe').style.left=le+'%';
+  const f=$('#rfill');f.style.left=ls+'%';f.style.width=Math.max(0,le-ls)+'%';
+  $('#rbs').setAttribute('aria-valuetext',D.long(d.startDate));$('#rbe').setAttribute('aria-valuetext',D.long(d.endDate));
+  const fs=$('#f-s'),fe=$('#f-e');if(fs)fs.value=d.startDate;if(fe){fe.value=d.endDate;fe.min=d.startDate;}
+  $('#rcount').textContent=n?n+' gün seçili. En fazla 30 gün.':'Geçerli bir aralık seç.';
+}
+function rbMove(ev){
+  const d=S.draft,bar=$('#rbar'),r=bar.getBoundingClientRect();
+  const f=Math.max(0,Math.min(1,(ev.clientX-r.left)/r.width));
+  let date=D.add(D.today(),Math.round(f*RB_SPAN));
+  if(S.rbDrag==='s'){if(date>d.endDate)date=d.endDate;d.startDate=date;}
+  else{if(date<d.startDate)date=d.startDate;d.endDate=date;}
+  d.errors={};rbPaint();
+}
+function bindRangeBar(){
+  const bar=$('#rbar');if(!bar)return;
+  rbPaint();
+  bar.addEventListener('pointerdown',ev=>{
+    ev.preventDefault();
+    const d=S.draft,r=bar.getBoundingClientRect(),f=(ev.clientX-r.left)/r.width;
+    const ds=Math.abs(rbIdx(d.startDate)/RB_SPAN-f),de=Math.abs(rbIdx(d.endDate)/RB_SPAN-f);
+    S.rbDrag=ds<=de?'s':'e';bar.setPointerCapture(ev.pointerId);rbMove(ev);
+  });
+  bar.addEventListener('pointermove',ev=>{if(S.rbDrag)rbMove(ev);});
+  const stop=()=>{if(S.rbDrag){S.rbDrag=null;render();}};
+  bar.addEventListener('pointerup',stop);bar.addEventListener('pointercancel',stop);
+  bar.addEventListener('keydown',ev=>{
+    const t=ev.target.closest('.rd');if(!t)return;
+    const k=ev.key==='ArrowRight'?1:ev.key==='ArrowLeft'?-1:0;if(!k)return;
+    ev.preventDefault();const d=S.draft;
+    if(t.dataset.rb==='s'){const nd=D.add(d.startDate,k);if(nd<=d.endDate&&nd>=D.today())d.startDate=nd;}
+    else{const nd=D.add(d.endDate,k);if(nd>=d.startDate&&D.diff(D.today(),nd)<=RB_SPAN)d.endDate=nd;}
+    d.errors={};rbPaint();
+  });
 }
 CHANGES.startDate=el=>{const d=S.draft;if(!D.valid(el.value))return;d.startDate=el.value;if(d.endDate<d.startDate)d.endDate=d.startDate;d.errors={};render();};
 CHANGES.endDate=el=>{const d=S.draft;if(!D.valid(el.value))return;d.endDate=el.value;d.errors={};render();};
-ACTIONS.setDur=el=>{S.draft.duration=+el.dataset.v;render();};
+ACTIONS.setDur=el=>{const d=S.draft;d.duration=+el.dataset.v;if(d.duration===1440){d.earliest='00:00';d.latest='24:00';}else if(d.earliest==='00:00'&&d.latest==='24:00'){d.earliest='08:00';}render();};
 ACTIONS.setSpan=el=>{const d=S.draft;d.endDate=D.add(d.startDate,+el.dataset.n-1);d.errors={};render();};
 ACTIONS.hour=el=>{
   const d=S.draft,k=el.dataset.k,dl=+el.dataset.d;let e=T.toMin(d.earliest),l=T.toMin(d.latest);
@@ -1080,7 +1213,7 @@ ACTIONS.cStep=el=>{
     if(d.step===3){
       const n=D.range(d.startDate,d.endDate).length;
       if(!n){d.errors.dates='Tarih aralığı geçersiz.';render();return;}
-      if(n>28){d.errors.dates='En fazla 28 günlük aralık seçebilirsin.';render();return;}
+      if(n>30){d.errors.dates='En fazla 30 günlük aralık seçebilirsin.';render();return;}
       if(d.endDate<D.today()){d.errors.dates='Bu aralık geçmişte kalmış.';render();return;}
     }
   }
@@ -1101,7 +1234,7 @@ ACTIONS.cCreate=()=>{
 /* ---- KATIL: kod gir / isim yaz ---- */
 function screenJoinCode(){
   $app.innerHTML=shell('<div style="max-width:560px;margin:20px auto"><section class="panel rivets"><h2>Hangi buluşma?</h2><p class="muted">Organizatörün verdiği 6 haneli kodu yaz.</p>'
-    +'<div class="field mt"><label for="f-code">Buluşma kodu</label><input id="f-code" class="inp xl" data-enter="joinCode" maxlength="12" autocomplete="off" autocapitalize="characters" placeholder="K7M2QX" style="text-transform:uppercase;letter-spacing:.2em"></div>'
+    +'<div class="field mt"><label for="f-code">Buluşma kodu</label><input id="f-code" class="inp xl" data-enter="joinCode" maxlength="12" autocomplete="off" autocapitalize="characters" placeholder="K7M2QX" style="letter-spacing:.2em"></div>'
     +(S.joinErr?'<div class="err" role="alert">'+esc(S.joinErr)+'</div>':'')
     +'<div class="row mt"><button class="btn" data-act="joinCode">Devam</button></div>'
     +'<p class="small muted mt">Kodu bilen herkes buluşmaya katılabilir.</p></section></div>');
@@ -1134,7 +1267,8 @@ ACTIONS.doJoin=()=>{
 /* ---- DAVET ---- */
 function screenInvite(m,ps,me){
   const org=ps.find(p=>p.id===m.organizerId),admin=isOrg(m,me),link=inviteLink(m);
-  const wa='https://wa.me/?text='+encodeURIComponent('gurupla ile buluşalım: “'+m.title+'” için müsait olduğun günleri işaretle. Kod: '+m.code+'\n'+link);
+  const shareMsg='buluşma için hemen gurupla!'+(m.description?'\n\n'+m.description:'')+'\n\n'+m.title+'\n'+link;
+  const wa='https://wa.me/?text='+encodeURIComponent(shareMsg);
   const rows=ps.map((p,i)=>{
     const st=p.submissionStatus==='submitted'?'<span class="chip g">'+shape('preferred',12)+' Yanıtladı</span>':'<span class="chip">'+shape('pending',12)+' Bekleniyor</span>';
     return '<div class="prow">'+avatar(p,i)+'<span class="nm">'+esc(p.displayName)+(p.id===m.organizerId?' <span class="small muted">(organizatör)</span>':'')+'</span>'+(p.isRequired?'<span class="chip c">Zorunlu</span>':'')+st
@@ -1142,20 +1276,21 @@ function screenInvite(m,ps,me){
        +(p.submissionStatus!=='submitted'?'':'')
        +(p.id!==m.organizerId?'<button class="btn sm ghost" data-act="rmPart" data-id="'+p.id+'" aria-label="'+esc(p.displayName)+' kişisini çıkar">Çıkar</button>':''):'')+'</div>';
   }).join('');
-  const inner='<div class="two"><div><div class="tkw"><article class="ticket t-purple reveal"><div class="main"><p class="tsub">Buluşma davetiyesi</p><h2 style="font-size:clamp(30px,6vw,50px);margin:10px 0 14px;letter-spacing:-.04em">'+esc(m.title)+'</h2>'
+  const inner='<div class="yonet-note row between" style="align-items:flex-start;gap:16px;margin-bottom:18px"><p class="intro-note" style="font-size:16px;margin:0;max-width:60ch">bu sayfa buluşmanın yönetim ekranı. davet linkini paylaş, kimin katıldığını takip et, zorunlu kişileri belirle; herkes yanıtlayınca önerileri sen aç. bu sayfanın linkini sadece sen sakla, diğerlerine davet linkini gönder.</p><button class="btn sm ghost" data-act="copyAdmin">Yönetim linkini kopyala</button></div><div class="two"><div><div class="tkw"><article class="ticket t-purple reveal"><div class="main"><p class="tsub">Buluşma davetiyesi</p><h2 style="font-size:clamp(30px,6vw,50px);margin:10px 0 14px;letter-spacing:-.04em">'+esc(m.title)+'</h2>'
     +'<p><b>Organizatör</b> '+(org?esc(org.displayName):'–')+'</p><p><b>Tarih aralığı</b> '+rangeLabel(m)+'</p><p><b>Süre</b> '+dur(m.durationMinutes)+'</p>'+(m.location?'<p><b>Yer</b> '+esc(m.location)+'</p>':'')+'</div>'
-    +'<div class="stub"><span class="lbl">Buluşma kodu</span><div class="bignum" style="font-size:46px;letter-spacing:.06em" aria-label="Kod '+m.code.split('').join(' ')+'">'+m.code+'</div>'
+    +'<div class="stub"><span class="lbl">Buluşma kodu</span><div class="bignum" style="font-size:clamp(24px,2.6vw,30px);letter-spacing:.03em;white-space:nowrap" aria-label="Kod '+m.code.split('').join(' ')+'">'+m.code+'</div>'
     +'<button class="btn sm" data-act="copyLink">Linki kopyala</button><button class="btn sm cyan" data-act="copyCode">Kodu kopyala</button><a class="btn sm green" href="'+wa+'" target="_blank" rel="noopener">WhatsApp</a></div></article></div>'
     +'</div>'
     +'<section class="panel rivets"><h2>Katılımcılar <span class="muted" style="font-size:18px">('+ps.length+')</span></h2><div class="plist mt">'+rows+'</div>'
     +'<div class="row mt"><input id="newName" class="inp" style="flex:1;min-width:150px" maxlength="40" placeholder="Davetli adı" data-enter="addPart" aria-label="Davetli adı"><button class="btn sm" data-act="addPart">Ekle</button></div><div id="addErr" class="err" role="alert"></div>'
     +(admin&&ps.some(p=>p.submissionStatus!=='submitted')?'':'')
-    +'</section></div><div class="row between mt2 sticky"><a class="btn ghost" href="#/m/'+m.code+'/group">Grup görünümü</a><a class="btn big" href="#/m/'+m.code+'/avail">Müsaitliğimi gir</a></div>';
+    +'</section></div><div class="row between mt2 sticky"><a class="btn sm ghost" href="#/m/'+m.code+'/group">Grup görünümü</a><a class="btn sm" href="#/m/'+m.code+'/avail">Müsaitliğimi gir</a></div>';
   $app.innerHTML=meetingShell(m,'invite',inner,me,ps);
 }
 const curMeeting=()=>DB.getMeeting(seg()[1]);
 ACTIONS.copyLink=()=>copyText(inviteLink(curMeeting()));
 ACTIONS.copyCode=()=>copyText(curMeeting().code);
+ACTIONS.copyAdmin=()=>copyText(location.href.split('#')[0]+'#/m/'+curMeeting().code+'/invite');
 ACTIONS.addPart=()=>{
   const m=curMeeting(),i=$('#newName');
   try{DB.addParticipant(m.id,{displayName:i.value});DB.refreshStatus(m.id);render();toast('Davetli eklendi');}
@@ -1177,15 +1312,16 @@ function screenAvail(m,ps,me){
   const e=T.toMin(m.earliestTime),l=T.toMin(m.latestTime);
   const per=PERIODS.filter(p=>Math.max(p.s,e)<Math.min(p.e,l));
   const pick=per.find(p=>p.s<=1140&&p.e>1140)||per[0];if(pick)AV.open[pick.k]=true;
-  $app.innerHTML=meetingShell(m,'avail','<div style="max-width:720px;margin:0 auto" class="stack"><div class="guide" aria-label="Nasıl işaretlenir">'
-    +'<div class="gd g1">'+shape('preferred',22)+'<span>Tek tık<small>müsaitim</small></span></div><div class="gd g2">'+shape('possible',22)+'<span>Çift tık<small>olabilir</small></span></div><div class="gd g3">'+shape('unavailable',22)+'<span>Boş bırak<small>müsait değilim</small></span></div></div>'
+  $app.innerHTML=meetingShell(m,'avail','<div style="max-width:720px;margin:0 auto" class="stack">'
+    +'<p class="intro-note" style="font-size:16px;margin:0">gün seç, müsait olduğun saatlere dokun. dokunduğun yeşil olur, boş kalanlar müsait değil demek. istediğin kadar değiştirebilirsin.</p>'
+    +'<div class="guide" aria-label="Nasıl işaretlenir"><div class="gd g1">'+shape('preferred',22)+'<span>Tek tık<small>müsaitim</small></span></div></div>'
     +'<section class="panel"><div id="avCal"></div></section><section class="panel" id="avPanel"></section>'
-    +'<div class="row between sticky"><span class="small muted">Otomatik kaydedilir</span><button class="btn" data-act="avDone">Yanıtımı tamamla</button></div></div>',me,ps);
-  const cal=lineCalendar({dates,selected:AV.idx,onSelect:i=>avGo(i)});
+    +'<div class="row between sticky"><span class="small muted">müsait saatlerini girdiysen tamamlamak için buna bas.</span><button class="btn" data-act="avDone">Yanıtımı tamamla</button></div></div>',me,ps);
+  const cal=lineCalendar({dates,selected:AV.idx,onSelect:i=>avGo(i),arrows:false});
   AV.cal=cal;$('#avCal').appendChild(cal.el);
   const panel=$('#avPanel');
   panel.addEventListener('pointerdown',avDown);
-  panel.addEventListener('click',e=>{const s=e.target.closest('.slot');if(s&&e.detail===0){const e2=avEntry(),t=s.dataset.t,c=e2.slots[t];avSet(t,c?(c==='preferred'?'possible':null):'preferred');avCommit();}});
+  panel.addEventListener('click',e=>{const s=e.target.closest('.slot');if(s&&e.detail===0){const e2=avEntry(),t=s.dataset.t,c=e2.slots[t];avSet(t,c?null:'preferred');avCommit();}});
   avRefresh();
 }
 function avLeave(){
@@ -1200,20 +1336,29 @@ function avRefresh(){
   AV.cal.setStates(avStateFn);
   let body='';
   if(past)body='<p class="muted">Bu gün geçmişte kaldı.</p>';
+  else if(allDayM(m)){
+    body='<div class="row" style="gap:10px;flex-wrap:wrap">'+[['preferred','müsaitim'],['possible','olabilir'],['unavailable','müsait değilim']].map(([k,l])=>'<button class="btn'+(e.dayPreference===k?' dark':' ghost')+'" data-act="setDay" data-v="'+k+'">'+shape(k,16)+' '+l+'</button>').join('')+'</div><p class="intro-note" style="font-size:15px;margin-top:14px">saat derdi yok, sadece hangi günlerin uygun olduğunu işaretle. detayı sonra birlikte konuşursunuz.</p>';
+  }
   else{
     const a=T.toMin(m.earliestTime),l=T.toMin(m.latestTime);
     PERIODS.forEach(per=>{
       const lo=Math.max(per.s,a),hi=Math.min(per.e,l);if(lo>=hi)return;
       const tiles=[];for(let s=lo;s+30<=hi;s+=30)tiles.push(s);if(!tiles.length)return;
-      const cnt=tiles.filter(s=>e.slots[T.fmt(s)]).length;
-      body+='<div class="period'+(AV.open[per.k]?' open':'')+'"><button class="phead" data-act="togPeriod" data-k="'+per.k+'" aria-expanded="'+!!AV.open[per.k]+'"><span>'+per.n+' <small>'+T.fmt(lo)+'–'+T.fmt(hi)+'</small></span>'+(cnt?'<span class="chip g cnt">'+cnt+'</span>':'<span class="cnt"></span>')+'<span class="chev" aria-hidden="true">▼</span></button>'
-        +'<div class="pbody"><div class="slots" role="group" aria-label="'+per.n+' saatleri">'+tiles.map(s=>avTile(T.fmt(s),e.slots[T.fmt(s)])).join('')+'</div></div></div>';
+      body+='<div class="pline"><span class="pvert" aria-hidden="true">'+per.n+'</span><div class="slots" role="group" aria-label="'+per.n+' saatleri">'+tiles.map(s=>avTile(T.fmt(s),e.slots[T.fmt(s)])).join('')+'</div></div>';
     });
-    body+='<div class="row mt"><button class="btn sm ghost" data-act="clearDay">Günü temizle</button></div>';
   }
+  body+=avFoot();
   const done=AV.dates.filter(d=>avDayState(AV.cur,d)!=='unanswered').length;
-  $('#avPanel').innerHTML='<div class="row between" style="margin-bottom:12px"><h2 style="font-size:22px;margin:0">'+D.long(date)+'</h2><span class="small muted">'+esc(AV.cur.displayName)+' · '+done+'/'+AV.dates.length+' gün</span></div>'+body;
+  $('#avPanel').innerHTML='<p class="small muted" style="text-align:center;margin:0 0 8px">'+esc(AV.cur.displayName)+' · '+done+'/'+AV.dates.length+' gün yanıtlandı</p>'+body;
 }
+function avFoot(){
+  const i=AV.idx,N=AV.dates.length,d=AV.dates[i];
+  const arr=dir=>'<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="'+(dir<0?'M15 5l-7 7 7 7':'M9 5l7 7-7 7')+'" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  return '<div class="avfoot"><button class="btn sm ghost" data-act="clearDay">Günü temizle</button><span class="avday">'+D.day(d)+' '+D.month(d).slice(0,3)+' '+DAY_SHORT[D.dow(d)]+'</span>'
+    +'<button class="larr" data-act="avPrev" aria-label="Önceki gün"'+(i<=0?' disabled':'')+'>'+arr(-1)+'</button><button class="larr" data-act="avNext" aria-label="Sonraki gün"'+(i>=N-1?' disabled':'')+'>'+arr(1)+'</button></div>';
+}
+ACTIONS.avPrev=()=>avGo(AV.idx-1);
+ACTIONS.avNext=()=>avGo(AV.idx+1);
 function avTile(t,st){return '<button class="slot'+(st?' s-'+st:'')+'" data-t="'+t+'" aria-label="'+t+(st?', '+esc(STATE_LABEL[st]):', boş')+'">'+t+(st?shape(st,12):'')+'</button>';}
 function avRuns(entry,e,l){
   const out=[];let cur=null;
@@ -1246,10 +1391,8 @@ function avDown(ev){
   const up=()=>{
     document.removeEventListener('pointermove',mv);document.removeEventListener('pointerup',up);document.removeEventListener('pointercancel',up);
     if(!dragging){
-      const now=Date.now(),cur=avEntry().slots[start];
-      if(lastTap.t===start&&now-lastTap.time<340)avSet(start,'possible');
-      else avSet(start,cur?null:'preferred');
-      lastTap={t:start,time:now};
+      const cur=avEntry().slots[start];
+      avSet(start,cur?null:'preferred');
     }
     avCommit();
   };
@@ -1257,6 +1400,7 @@ function avDown(ev){
 }
 function avSave(d){try{DB.saveAvailability(AV.pid,d,AV.cur.availability[d]);DB.refreshStatus(AV.mid);}catch(err){console.error(err);toast('Kaydedilemedi: '+err.message,3500);}}
 ACTIONS.togPeriod=el=>{AV.open[el.dataset.k]=!AV.open[el.dataset.k];avRefresh();};
+ACTIONS.setDay=el=>{const e=avEntry();e.dayPreference=el.dataset.v;e.slots={};avSave(AV.dates[AV.idx]);avRefresh();};
 ACTIONS.clearDay=()=>{const d=AV.dates[AV.idx];delete AV.cur.availability[d];try{DB.saveAvailability(AV.pid,d,null);DB.refreshStatus(AV.mid);}catch(e){}avRefresh();toast('Gün temizlendi');};
 ACTIONS.avDone=()=>{
   avLeave();
@@ -1285,7 +1429,7 @@ function screenGroup(m,ps,me){
         return '<div class="row" style="gap:8px;margin-bottom:6px">'+shape(k==='unanswered'?'pending':k,16)+'<b>'+esc(p.displayName)+'</b><span class="small muted">'+STATE_LABEL[k]+(runs?' · '+runs:'')+'</span></div>';
       }).join('');
       let dens='';
-      for(let s=e;s+30<=l;s+=30){
+      for(let s=e;!allDayM(m)&&s+30<=l;s+=30){
         const t=T.fmt(s);let c=0;
         ps.forEach(p=>{const en=p.availability[d];if(en&&(en.dayPreference==='preferred'||en.dayPreference==='possible')){const v=en.slots[t];if(v==='preferred'||v==='possible')c++;}});
         const h=4+Math.round(54*(total?c/total:0));
@@ -1335,7 +1479,7 @@ function resTicket(c,i,m,admin){
     +'<span class="small muted">'+(d.status==='available'?'Tercih kalitesi %'+Math.round(d.pref*100):d.status==='unavailable'?'Müsait değil':'Yanıt bekleniyor')+'</span></div>').join('')+'</div></div>':'';
   return '<div class="tkw" style="'+(big?'':'margin-top:18px')+'"><article class="ticket '+(big?'':'sm ')+'t-'+(big?'purple':TKIND[1+((i-1)%5)])+(big?' reveal':'')+'"><div class="main">'
     +(big?'<div class="badge">'+shape('best',20)+'EN İYİ SEÇENEK</div>':'<div class="row" style="margin-bottom:8px"><span class="rank">'+(i+1)+'</span></div>')
-    +'<p class="tsub">'+DAY_NAMES[D.dow(c.date)]+' · '+D.month(c.date)+'</p><div class="tdate">'+D.day(c.date)+'</div><div class="ttime">'+c.start+' – '+c.end+'</div><p class="tsub" style="margin-top:6px;opacity:.85">'+dur(c.durationMinutes)+'</p></div>'
+    +'<p class="tsub">'+DAY_NAMES[D.dow(c.date)]+' · '+D.month(c.date)+'</p><div class="tdate">'+D.day(c.date)+'</div><div class="ttime">'+(c.durationMinutes===1440?'tüm gün':c.start+' – '+c.end)+'</div><p class="tsub" style="margin-top:6px;opacity:.85">'+dur(c.durationMinutes)+'</p></div>'
     +'<div class="stub"><div><span class="lbl">Katılım</span><div class="bignum" style="font-size:'+(big?48:34)+'px;margin:6px 0">'+c.availableCount+'/'+c.totalParticipants+'</div><div class="meter" role="img" aria-label="Katılım yüzde '+pct+'"><i style="width:'+pct+'%"></i></div></div>'
     +'<div><span class="lbl">Tercih kalitesi %'+pref+'</span><div class="meter pref" role="img" aria-label="Tercih kalitesi yüzde '+pref+'" style="margin-top:6px"><i style="width:'+pref+'%"></i></div></div>'
     +(notes.length?'<ul class="lines">'+notes.join('')+'</ul>':'')
@@ -1361,8 +1505,10 @@ function screenResults(m,ps,me){
     else o={title:'Ortak zaman bulunamadı',text:'Henüz kimse, buluşma süresini kesintisiz kapsayan bir aralık işaretlemedi. Saatleri biraz daha geniş boyamak sorunu çözebilir.',actions:'<a class="btn" href="#/m/'+m.code+'/avail">Müsaitliğimi düzenle</a><a class="btn ghost" href="#/m/'+m.code+'/group">Grup görünümü</a>'};
     inner=emptyState(o);
   }
+  inner='<div class="row" style="margin-bottom:12px"><button class="btn sm ghost" data-act="copyResults">Sonuç linkini kopyala</button><span class="small muted">bu linki paylaşan herkes önerileri ve onayı görür</span></div>'+inner;
   $app.innerHTML=meetingShell(m,'results',inner,me,ps);
 }
+ACTIONS.copyResults=()=>{const m=curMeeting();copyText(location.href.split('#')[0]+'#/m/'+m.code+'/results');};
 ACTIONS.detail=el=>{S.openDetail[el.dataset.key]=!S.openDetail[el.dataset.key];render();};
 ACTIONS.choose=async el=>{
   const m=curMeeting(),ps=DB.getParticipants(m.id),me=getMe(m,ps);
@@ -1402,7 +1548,7 @@ function screenConfirm(m,ps,me){
     +'<div class="vs'+(confirmed?' ok':'')+'"><span>'+(confirmed?'ONAYLANDI':'ONAY BEKLİYOR')+'</span><small>'+D.mid(c.date)+'</small></div></article>'
     +'<div class="panel mt" style="max-width:640px"><div class="row">'
     +(me?'<button class="btn green'+(myf==='yes'?' on':'')+'" data-act="rsvp" data-v="yes" aria-pressed="'+(myf==='yes')+'">Geliyorum</button><button class="btn coral'+(myf==='no'?' on':'')+'" data-act="rsvp" data-v="no" aria-pressed="'+(myf==='no')+'">Gelemiyorum</button>':'')
-    +'<button class="btn ghost" data-act="icsDownload">Takvimime ekle</button><button class="btn ghost" data-act="copyConfirmLink">Bağlantı</button></div>'
+    +'<button class="btn ghost" data-act="icsDownload">Takvimime ekle</button><button class="btn ghost" data-act="copyConfirmLink">Bağlantı</button><button class="btn ghost" data-act="copyVize">Vizeyi kopyala</button></div>'
     +(waiting.length&&!confirmed?'<p class="small muted mt">Bekleyen: '+esc(waiting.join(', '))+'</p>':'')
     +(admin?'<hr style="border:0;border-top:2px dashed var(--border);margin:16px 0"><div class="row"><input id="f-loc2" class="inp" style="flex:1;min-width:150px" maxlength="80" placeholder="Yer" value="'+esc(m.location)+'" data-enter="saveLoc"><button class="btn sm" data-act="saveLoc">Yeri kaydet</button></div>'
       +'<div class="row mt"><button class="btn sm ghost" data-act="changeTime">Zamanı değiştir</button><button class="btn sm coral" data-act="cancelMeeting">İptal et</button></div>':'')
@@ -1410,6 +1556,56 @@ function screenConfirm(m,ps,me){
   S.justChose=false;
   $app.innerHTML=meetingShell(m,'confirm',inner,me,ps);
 }
+/* vize görseli: canvas ile çizilir, panoya PNG olarak kopyalanır */
+function vizeCanvas(m,c,ps,need){
+  const W=900,H=520,k=2,cv=document.createElement('canvas');
+  cv.width=W*k;cv.height=H*k;const g=cv.getContext('2d');g.scale(k,k);
+  const INK='#25212B',PURPLE='#5C32B5',PAPER='#FFF9EC',GREEN='#65D6A0',CORAL='#FF6257',GREY='#9a9097';
+  const F='Arial, Helvetica, sans-serif';
+  const rr=(x,y,w,h,r)=>{g.beginPath();g.moveTo(x+r,y);g.arcTo(x+w,y,x+w,y+h,r);g.arcTo(x+w,y+h,x,y+h,r);g.arcTo(x,y+h,x,y,r);g.arcTo(x,y,x+w,y,r);g.closePath();};
+  const yes=ps.filter(p=>need.has(p.id)&&p.finalConfirmation==='yes').length;
+  const confirmed=m.status==='confirmed';
+  g.fillStyle='#F5EBD6';g.fillRect(0,0,W,H);
+  rr(20,20,W-40,H-40,28);g.fillStyle=PAPER;g.fill();
+  g.save();rr(20,20,W-40,130,28);g.clip();g.fillStyle=PURPLE;g.fillRect(0,0,W,150);g.restore();
+  g.fillStyle=INK;g.fillRect(20,148,W-40,4);
+  rr(20,20,W-40,H-40,28);g.lineWidth=6;g.strokeStyle=INK;g.stroke();
+  g.fillStyle='#fff';g.font='800 40px '+F;g.textAlign='left';g.fillText('gurupla',60,92);
+  g.font='700 20px '+F;g.textAlign='right';g.fillText('buluşma vizesi',W-60,92);g.textAlign='left';
+  g.fillStyle=INK;g.font='800 44px '+F;g.fillText(m.title.slice(0,28),60,220);
+  const lab=(t,y)=>{g.fillStyle=GREY;g.font='700 18px '+F;g.fillText(t,60,y);};
+  const val=(t,y,sz)=>{g.fillStyle=INK;g.font='800 '+(sz||32)+'px '+F;g.fillText(t,60,y);};
+  lab('tarih',268);val(D.day(c.date)+' '+D.month(c.date)+' · '+DAY_NAMES[D.dow(c.date)],304);
+  lab('saat',358);val(c.start+'–'+c.end+' · '+dur(c.durationMinutes),394);
+  lab('yer',448);val(m.location||'henüz belirlenmedi',484,26);
+  g.fillStyle=GREY;g.font='700 18px '+F;g.fillText('yolcular · '+yes+'/'+need.size+' onay',520,268);
+  const list=ps.filter(p=>need.has(p.id));
+  list.slice(0,6).forEach((p,i)=>{
+    const y=306+i*34,f=p.finalConfirmation;
+    g.beginPath();g.arc(528,y-8,8,0,Math.PI*2);g.fillStyle=f==='yes'?GREEN:f==='no'?CORAL:'#E9E1D0';g.fill();g.lineWidth=2.5;g.strokeStyle=INK;g.stroke();
+    g.fillStyle=INK;g.font='700 24px '+F;g.fillText(p.displayName.slice(0,22),548,y);
+  });
+  if(list.length>6){g.fillStyle=GREY;g.font='700 20px '+F;g.fillText('+'+(list.length-6)+' kişi',548,306+6*34);}
+  g.fillStyle=GREY;g.font='700 18px '+F;g.fillText('kod',60,H-54);
+  g.fillStyle=INK;g.font='800 24px monospace';g.fillText(m.code,108,H-54);
+  rr(W-300,H-110,240,60,30);g.fillStyle=confirmed?GREEN:'#FFD54A';g.fill();g.lineWidth=4;g.strokeStyle=INK;g.stroke();
+  g.fillStyle=INK;g.font='800 24px '+F;g.textAlign='center';g.fillText(confirmed?'onaylandı':'onay bekliyor',W-180,H-72);g.textAlign='left';
+  return cv;
+}
+ACTIONS.copyVize=async()=>{
+  const m=curMeeting(),c=m.selectedCandidate;if(!c){toast('Henüz bir tarih seçilmedi');return;}
+  const ps=DB.getParticipants(m.id),need=new Set(c.availableIds.concat(m.requiredParticipantIds));
+  const cv=vizeCanvas(m,c,ps,need);
+  const blobP=new Promise(res=>cv.toBlob(res,'image/png'));
+  try{
+    if(!navigator.clipboard||!window.ClipboardItem)throw new Error('pano desteklenmiyor');
+    await navigator.clipboard.write([new ClipboardItem({'image/png':blobP})]);
+    toast('Vize panoya kopyalandı');
+  }catch(e){
+    const b=await blobP;const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='gurupla-vize-'+m.code+'.png';a.click();
+    toast('Pano desteklenmedi, görsel indirildi');
+  }
+};
 ACTIONS.rsvp=el=>{const m=curMeeting(),ps=DB.getParticipants(m.id),me=getMe(m,ps);const v=el.dataset.v;DB.saveConfirmation(me.id,me.finalConfirmation===v?null:v);render();toast(v==='yes'?'Geliyorsun':'Gelemeyeceğini bildirdin');};
 ACTIONS.copyConfirmLink=()=>{const m=curMeeting();copyText(location.href.split('#')[0]+'#/m/'+m.code+'/confirm');};
 ACTIONS.icsDownload=()=>{const m=curMeeting();if(!m.selectedCandidate)return;download('gurupla-'+m.code+'.ics','text/calendar;charset=utf-8',icsFor(m,m.selectedCandidate));toast('Takvim dosyası indirildi');};
@@ -1431,9 +1627,15 @@ function screenMeeting(code,stage){
   let m=DB.getMeeting(code);
   if(!m){stateScreen({title:'Buluşma bulunamadı',text:'“'+esc(code||'')+'” kodlu bir buluşma bu tarayıcıda yok. Kodu kontrol edip tekrar dene.',actions:'<a class="btn" href="#/join">Kodu yeniden gir</a><a class="btn ghost" href="#/create">Yeni buluşma</a>'});return;}
   if(stage==='join'&&m.status!=='cancelled'){screenJoin(m);return;}
-  if(m.status!=='cancelled'&&!Session.get(m.id)){screenJoin(m);return;}
+  const viewOnly=m.status!=='cancelled'&&!Session.get(m.id)&&(stage==='results'||stage==='confirm');
+  if(m.status!=='cancelled'&&!Session.get(m.id)&&!viewOnly){screenJoin(m);return;}
   DB.refreshStatus(m.id);m=DB.getMeeting(code);
-  const ps=DB.getParticipants(m.id),me=getMe(m,ps);
+  const ps=DB.getParticipants(m.id),me=viewOnly?null:getMe(m,ps);
+  if(viewOnly){
+    if(stage==='results')screenResults(m,ps,null);else screenConfirm(m,ps,null);
+    $('#main').insertAdjacentHTML('afterbegin','<div class="note info" style="margin-bottom:14px"><b>sadece görüntülüyorsun.</b> tarihe katılmak ve onay vermek için önce buluşmaya katıl. <a class="btn sm" style="margin-left:8px" href="#/m/'+m.code+'/join">Buluşmaya katıl</a></div>');
+    return;
+  }
   if(m.status==='cancelled'){stateScreen({title:'Bu buluşma iptal edildi',text:'“'+esc(m.title)+'” organizatör tarafından iptal edildi. Eski yanıtlar silinmedi ama artık yeni yanıt alınmıyor.',actions:'<a class="btn" href="#/create">Yeni buluşma oluştur</a><a class="btn ghost" href="#/">Ana sayfa</a>',a:'unavailable',b:'unavailable',c:'unavailable'});return;}
   if(!me){stateScreen({title:'Katılımcı yok',text:'Bu buluşmada henüz kimse yok.',actions:'<a class="btn" href="#/m/'+m.code+'/join">Katıl</a>'});return;}
   switch(stage){
